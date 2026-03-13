@@ -1,0 +1,1287 @@
+{
+  "nodes": [
+    {
+      "id": "REALM_CONTAINER",
+      "label": "Container Realm",
+      "type": "realm"
+    },
+    {
+      "id": "REALM_AWS",
+      "label": "AWS Realm",
+      "type": "realm"
+    },
+    {
+      "id": "REALM_ON_PREM",
+      "label": "On-Prem Realms",
+      "type": "realm"
+    },
+    {
+      "id": "REALM_MEMORY",
+      "label": "Attacker Memory",
+      "type": "realm"
+    },
+    {
+      "id": "S-000",
+      "type": "step",
+      "label": "S-000: Container Realm Initial Access",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-100",
+      "type": "step",
+      "label": "S-100: Container Execution",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-200",
+      "type": "step",
+      "label": "S-200: Node Execution",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-300",
+      "type": "step",
+      "label": "S-300: New Kubernetes Principal",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-350",
+      "type": "step",
+      "label": "S-350: New AWS Principal",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-600",
+      "type": "step",
+      "label": "S-600: K8s Permissions and Resource Discovery",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-650",
+      "type": "step",
+      "label": "S-650: RBAC Abuse for Privilege Escalation",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-651",
+      "type": "step",
+      "label": "S-651: Privileged/Malicious Container Deployment",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-652",
+      "type": "step",
+      "label": "S-652: Stealing Containers",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-653",
+      "type": "step",
+      "label": "S-653: Assign Additional Permissions",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-654",
+      "type": "step",
+      "label": "S-654: Secret Discovery",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-700",
+      "type": "step",
+      "label": "S-700: RBAC Abuse for Defence Bypass",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-701",
+      "type": "step",
+      "label": "S-701: Bypass Admission Controls",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-702",
+      "type": "step",
+      "label": "S-702: DoS Safeguards Removal",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-703",
+      "type": "step",
+      "label": "S-703: Network Policies Bypass",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-800",
+      "type": "step",
+      "label": "S-800: RBAC Post-Exploitation",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-801",
+      "type": "step",
+      "label": "S-801: Code/Config Injection",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-802",
+      "type": "step",
+      "label": "S-802: DoS via Tight Resource Limits",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-803",
+      "type": "step",
+      "label": "S-803: DoS by Deleting or Modifying K8s Resources",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-804",
+      "type": "step",
+      "label": "S-804: MITM Against Pods",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-900",
+      "type": "step",
+      "label": "S-900: Control plane Compromised",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-950",
+      "type": "step",
+      "label": "S-950: All worker nodes compromised",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-999",
+      "type": "step",
+      "label": "S-999: Container Realm Exploitation Exhausted for the Current Attack Cycle",
+      "parent": "REALM_CONTAINER"
+    },
+    {
+      "id": "S-AWS-000",
+      "type": "step",
+      "label": "S-AWS-000: AWS Realm Initial Access",
+      "parent": "REALM_AWS"
+    },
+    {
+      "id": "S-AWS-100",
+      "type": "step",
+      "label": "S-AWS-100: AWS Realm Exploitation",
+      "parent": "REALM_AWS"
+    },
+    {
+      "id": "S-AWS-999",
+      "type": "step",
+      "label": "S-AWS-999: AWS Realm Exploitation Exhausted for the Current Attack Cycle",
+      "parent": "REALM_AWS"
+    },
+    {
+      "id": "S-OP-000",
+      "type": "step",
+      "label": "S-OP-000: On-Prem Realm Initial Access",
+      "parent": "REALM_ON_PREM"
+    },
+    {
+      "id": "S-OP-100",
+      "type": "step",
+      "label": "S-OP-100: On-Prem Realm Exploitation",
+      "parent": "REALM_ON_PREM"
+    },
+    {
+      "id": "S-OP-999",
+      "type": "step",
+      "label": "S-OP-999: On-Prem Realm Exploitation Exhausted for the Current Attack Cycle",
+      "parent": "REALM_ON_PREM"
+    },
+    {
+      "id": "T-900",
+      "type": "step",
+      "label": "T-900: All Realms Exploitation Exhausted"
+    },
+    {
+      "id": "T-999",
+      "type": "step",
+      "label": "T-999: Another Realm Exploit Elevates Privileges in the Container Realm"
+    },
+    {
+      "id": "STATE-CRED",
+      "label": "Credential State",
+      "type": "state",
+      "stateCategory": "credential",
+      "parent": "REALM_MEMORY"
+    },
+    {
+      "id": "STATE-ENV",
+      "label": "Environment State",
+      "type": "state",
+      "stateCategory": "environment",
+      "parent": "REALM_MEMORY"
+    },
+    {
+      "id": "STATE-CTRL",
+      "label": "Workload Control State",
+      "type": "state",
+      "stateCategory": "control",
+      "parent": "REALM_MEMORY"
+    }
+  ],
+  "edges": [
+    {
+      "source": "S-000",
+      "target": "S-100",
+      "misconfigurationIds": [
+        "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91",
+        "b7c9a4e1-2d6f-4a8e-9f3b-0c6d8e2a5f41"
+      ],
+      "attackIds": [
+        "6b3f8a1e-2c47-4d9e-9a5f-0c1e7b4a8d92"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Exploit Public-Facing Application",
+        "External Remote Services",
+        "Valid Accounts",
+        "Supply-Chain Compromise",
+        "Cloud-to-Cluster Pivoting"
+      ]
+    },
+    {
+      "source": "S-000",
+      "target": "S-200",
+      "misconfigurationIds": [
+        "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91"
+      ],
+      "attackIds": [
+        "0f9c2b7a-8c4a-4f5e-9b63-7d6e1a4c8b2f"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Exploit Public-Facing Application",
+        "External Remote Services",
+        "Valid Accounts",
+        "Supply-Chain Compromise",
+        "Cloud-to-Cluster Pivoting",
+        "Unauthorized Node Enrollment via Leaked Join Token"
+      ]
+    },
+    {
+      "source": "S-000",
+      "target": "S-300",
+      "misconfigurationIds": [
+        "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91"
+      ],
+      "type": "attack",
+      "attackIds": [],
+      "edgeLabels": [
+        "Valid Accounts",
+        "Cloud-to-Cluster Pivoting"
+      ]
+    },
+    {
+      "source": "S-100",
+      "target": "S-350",
+      "misconfigurationIds": [
+        "7c1e9a4b-3d5f-4f8a-b2c6-0e9d5a1c8f42",
+        "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22"
+      ],
+      "type": "attack",
+      "attackIds": [
+        "3d7f9a2c-4b61-4e8a-9f25-0c6b1e8d5a94"
+      ],
+      "edgeLabels": [
+        "Access EC2 IMDS Endpoint"
+      ]
+    },
+    {
+      "source": "S-100",
+      "target": "S-200",
+      "misconfigurationIds": [
+        "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91",
+        "5e3a9c41-7d2f-4a6b-8c0e-1f9b2a6d4e73",
+        "7c1e9a4b-3d5f-4f8a-b2c6-0e9d5a1c8f42",
+        "b6e4d9f2-8c21-4a7a-9c3d-1f5a2e0b7c44",
+        "b7e4c8a2-6d91-4c6a-9a3f-1f5b0a2d9c44"
+      ],
+      "attackIds": [
+        "c4e8b6a2-1f39-4d7b-9c52-8e6f0a3b9d41",
+        "8e6a7b3c-2c9f-4a5e-9d41-1b6f4e0c2a97",
+        "7c3e9d5a-4f2a-4b9e-9c6a-1a8f2e6b0c41",
+        "9d7b2e41-6c3a-4f8e-9a52-3c1b6e0f7a24",
+        "5c2f8a3e-7c1d-4e6b-9a42-0b7e91d4f6aa",
+        "a9c7f4e2-1d6b-4f8a-9c3b-5b2a1e7d4c90",
+        "6c1d9f8b-4e7a-4c2e-9a3f-2b8e5d0c7a41",
+        "8e4b2f6a-1d9c-4b7a-9c3e-5a0f6d2b7e91",
+        "f3a9c2d1-6a7e-4c2f-9e41-8b7d5a0c6e92"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Escape via Container Runtime Socket",
+        "Exploiting Vulnerable Infrastructure",
+        "Escape from Privileged Containers",
+        "Escape via Writable /var/log",
+        "Escape via Sensitive Folder Mount",
+        "Abuse hostPID, hostIPC, hostNetwork"
+      ]
+    },
+    {
+      "source": "S-100",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-100",
+      "target": "S-654",
+      "misconfigurationIds": [
+        "7c1e9a4b-3d5f-4f8a-b2c6-0e9d5a1c8f42",
+        "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
+        "6b3f8c2e-4a9d-4f71-8c5e-1a0d9e7b2f64",
+        "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22",
+        "9c4b2f6e-8a3d-4e7f-b1a9-0f6d2e8c5a41"
+      ],
+      "attackIds": [
+        "3d7f9a2c-4b61-4e8a-9f25-0c6b1e8d5a94"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Mounted SA tokens",
+        "Mounted IRSA tokens",
+        "Auth-n Materials in File System",
+        "Auth-n Material in Process' Memory",
+        "Secrets from IMDS"
+      ]
+    },
+    {
+      "source": "S-100",
+      "target": "S-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Privilege escalation in the Containers Realm is exhausted"
+      ]
+    },
+    {
+      "source": "S-100",
+      "target": "STATE-CTRL",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "bidirectional": true,
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Controlled Workloads"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-100",
+      "misconfigurationIds": [
+        "5e3a9c41-7d2f-4a6b-8c0e-1f9b2a6d4e73"
+      ],
+      "attackIds": [
+        "6d9f2b81-3a7c-4e5d-8a42-0f1c9e7b5a33"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "RCE via Container Runtime Socket",
+        "Full Access to Containers"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-350",
+      "misconfigurationIds": [
+        "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22"
+      ],
+      "attackIds": [
+        "3d7f9a2c-4b61-4e8a-9f25-0c6b1e8d5a94"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Access EC2 IMDS Endpoint"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-651",
+      "misconfigurationIds": [
+        "b6e4d9f2-8c21-4a7a-9c3d-1f5a2e0b7c44"
+      ],
+      "attackIds": [
+        "c4e8b6a2-1f39-4d7b-9c52-8e6f0a3b9d41"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Deploy Container via Runtime Socket"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-654",
+      "misconfigurationIds": [
+        "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
+        "6b3f8c2e-4a9d-4f71-8c5e-1a0d9e7b2f64",
+        "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22",
+        "e3b7a2c9-5f41-4d8e-9a62-1c0f8b6d4a91"
+      ],
+      "attackIds": [
+        "8a2f9d6c-4b31-4c7e-9e5a-1d0f6b8c3e72"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Auth-n Materials in File System",
+        "Auth-n Material in Process' Memory",
+        "Secrets from IMDS"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Privilege escalation in the Containers Realm is exhausted"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-950",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "All Nodes were Compromised"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "S-900",
+      "misconfigurationIds": [
+        "8c2f6b41-9a3e-4d1c-b7e5-0f6a9d3c2e84"
+      ],
+      "attackIds": [
+        "9b7e3d41-5f6a-4c2b-9c8a-0f6e2a1d4b93",
+        "b6f1c8a4-3d9e-4a7f-9c2e-5a0d8e1b7f63"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Bypass Encryption-at-Rest via Exposed Encryption Configuration",
+        "Read-Write Access to ETCD"
+      ]
+    },
+    {
+      "source": "S-200",
+      "target": "STATE-CTRL",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Controlled Workloads"
+      ]
+    },
+    {
+      "source": "S-350",
+      "target": "S-300",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-300",
+      "target": "S-600",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "2f8c9a41-6d7e-4b0f-9e3a-1c5b7d8a0f22"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Enumerate Permissions via SelfSubjectAccessReview API",
+        "Read (Cluster)Roles and Bindings"
+      ]
+    },
+    {
+      "source": "S-300",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-300",
+      "target": "STATE-CRED",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Credentials"
+      ]
+    },
+    {
+      "source": "S-350",
+      "target": "S-300",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "3d7f9a2c-4b61-4e8a-9f25-0c6b1e8d5a94"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Create a K8s Token with EKS API"
+      ]
+    },
+    {
+      "source": "S-350",
+      "target": "S-654",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-350",
+      "target": "STATE-CRED",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Credentials"
+      ]
+    },
+    {
+      "source": "S-350",
+      "target": "S-100",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-350",
+      "target": "S-200",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-600",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Use RBAC Permissions to Gain new API Privileges"
+      ]
+    },
+    {
+      "source": "S-600",
+      "target": "S-700",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Use RBAC Permissions to Circumvent Hardening Measures"
+      ]
+    },
+    {
+      "source": "S-600",
+      "target": "S-800",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Use RBAC Permissions to Disrupt the Cluster or Execute a Non Container-Specific Attack"
+      ]
+    },
+    {
+      "source": "S-600",
+      "target": "S-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Privilege escalation in the Containers Realm is exhausted"
+      ]
+    },
+    {
+      "source": "S-600",
+      "target": "STATE-ENV",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Cluster Resources",
+        "Memorize Principals and Permissions"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-100",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "2d7f1c4a-9b6e-4f8d-a3e2-6c9b0f1e5a47",
+        "9c7e2f6a-4b1d-4f9a-8e3c-6a1b2d0f5e84",
+        "6b3f8a1e-2c47-4d9e-9a5f-0c1e7b4a8d92",
+        "8f2c6a3e-1b74-4e9a-9c5d-0a7e3b2f6d91"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "RCE via 'exec'",
+        "RCE via `attach`",
+        "RCE via 'nodes/proxy'",
+        "ConfigMap Abuse for Code/Config Injection"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-300",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "5c9e2b6a-8f4d-4c31-9a72-1e6b0d8f3c54",
+        "6b3a8f2e-7d44-4c9a-9e51-1c0d5f8a2b97",
+        "a4e9c7b2-6f3d-4c81-9b5a-2d0f8e7c1a64",
+        "8b7f1a3c-2e4a-4c0e-9c6e-6f3d9a2c51d4"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Impersonation",
+        "CSR Manipulation",
+        "Create Temporary SA Token",
+        "Create Persistent SA Token"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-600",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-651",
+      "misconfigurationIds": [
+        "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91"
+      ],
+      "attackIds": [
+        "a4c9b7e2-8d6f-4a3b-9c1e-7f2b5d0e6a91",
+        "4d2f9b1e-6c3a-4a58-9a7e-1b5f0c8e2d91",
+        "7c4b9a2e-1f6d-4a8e-b3e7-92d6a5c1f8b0",
+        "6b4e2a3f-8f6c-4e9b-b1c9-7a0e5d2c1f84"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Ephemeral Container Abuse",
+        "Workload Deployment Privilege Abuse",
+        "MITM via Admission Controllers"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-652",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "6f1c9e2a-0d47-4a7b-9b85-8c3e4a9d2f61",
+        "4b7f8a2e-3c9b-4d6a-8f21-1e5d9c0a7b64",
+        "9d2a7c4f-1e63-4b6a-9a8e-3c8f1a5b0e92"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Stealing Pods via Unschedulable Nodes",
+        "Stealing Pods via Tainted Nodes",
+        "Stealing Pods via Nodes with Zero Allocatable Pods"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-653",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "c1e6b4f7-2a6d-4c2b-9b73-5f8e4d1a9c02",
+        "9b7c4e2a-6f3d-4b91-8a5c-1e0d2f6a8c34",
+        "a9e3c7f4-1b5d-4f6e-9c2a-0e8f7d6b1c54"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Role / ClusterRole Manipulation",
+        "Role / ClusterRole Binding Manipulation",
+        "EKS 'aws-auth' ConfigMap Abuse"
+      ]
+    },
+    {
+      "source": "S-650",
+      "target": "S-654",
+      "misconfigurationIds": [
+        "6b3f8c2e-4a9d-4f71-8c5e-1a0d9e7b2f64",
+        "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
+        "c4e9b2a7-1d6f-4a83-9f5c-8b0e2a1d7f63"
+      ],
+      "attackIds": [
+        "9b4c6e2a-3f71-4d9a-8e5a-0c2d7f6a1b48",
+        "f6b1e4a2-9c3d-4a7e-b8f1-2d9c6e0a5b47",
+        "7c1a4f9e-2b6e-4c8d-b9d3-5a1f0e6c92ab",
+        "7c4b9a2e-1f6d-4a8e-b3e7-92d6a5c1f8b0"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Read Secrets",
+        "Read ConfigMaps",
+        "Read Workload Manifests",
+        "MITM via Admission Controllers"
+      ]
+    },
+    {
+      "source": "S-651",
+      "target": "S-100",
+      "misconfigurationIds": [
+        "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91",
+        "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91"
+      ],
+      "attackIds": [
+        "a4c9b7e2-8d6f-4a3b-9c1e-7f2b5d0e6a91",
+        "4d2f9b1e-6c3a-4a58-9a7e-1b5f0c8e2d91",
+        "6b4e2a3f-8f6c-4e9b-b1c9-7a0e5d2c1f84"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Control Container via a C2 Channel",
+        "Execute Arbitrary Code"
+      ]
+    },
+    {
+      "source": "S-651",
+      "target": "S-200",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-651",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-652",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-653",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-654",
+      "target": "S-100",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-654",
+      "target": "S-200",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-654",
+      "target": "S-300",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "3f8a6c1e-9d4b-4c7a-b2c1-8e9f6d4a1b72"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Valid Accounts"
+      ]
+    },
+    {
+      "source": "S-654",
+      "target": "S-350",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Valid Accounts"
+      ]
+    },
+    {
+      "source": "S-654",
+      "target": "S-650",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-654",
+      "target": "STATE-CRED",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Credentials"
+      ]
+    },
+    {
+      "source": "S-700",
+      "target": "S-600",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-700",
+      "target": "S-701",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "6e2c9b8a-4f1d-4c3a-9e7b-1a5f8d0c2b74",
+        "4f2b9c6e-8a31-4c4e-9f7b-1d6a0e3c52ab",
+        "7f2a9c61-4e8d-4c3f-9b0a-1d6e5f8c2a90"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "PSA Bypass via PersistentVolume Abuse",
+        "PSA Bypass via Namespace Manipulation",
+        "Admission Controls Bypass via AdmissionRegistration Modification"
+      ]
+    },
+    {
+      "source": "S-700",
+      "target": "S-702",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "9c1d7f4e-2c6a-4a7e-8b21-3e5c7a0f4d92",
+        "7e3a4f2c-8b6d-4b2a-9f7c-1a6e5d9c0b41"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Allow Greedy Namespaces via ResourceQuota Relaxation",
+        "Allow Greedy Containers via LimitRange Relaxation"
+      ]
+    },
+    {
+      "source": "S-700",
+      "target": "S-703",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "b7a4c2e1-3d6f-4c9a-9f2e-1a8d5c0e6b93",
+        "7c9b2a1e-4f6d-4a8c-9e31-0d5b6f8a2c94"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Bypass Network Restrictions via Pods Port Forwarding",
+        "Bypass Network Restrictions via NetworkPolicies Modification"
+      ]
+    },
+    {
+      "source": "S-701",
+      "target": "S-700",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-702",
+      "target": "S-700",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-703",
+      "target": "S-700",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-800",
+      "target": "S-600",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-800",
+      "target": "S-804",
+      "misconfigurationIds": [
+        "e2f7c9b4-6d1a-4b5e-9a3c-0f8e2d7b6a41",
+        "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91"
+      ],
+      "attackIds": [
+        "1e9a7c3b-4d52-4f6a-9b8e-0c2d5f7a6e41",
+        "5a7c9e2b-4d8f-4c1e-9b63-1e0a6f2d8c94",
+        "8b2e6f9a-3c41-4d7e-a5f1-0c9b6e4d2a78",
+        "2a9f7c6e-5b41-4e8d-9c3a-1d0f8b6e4c72",
+        "9d2f8a6c-3e41-4b77-bc9a-5c1e7f0a8b64",
+        "4e7b1c9a-8f3d-4a62-bc5a-2d6f0e91c3ab",
+        "b6c1e3a4-9c74-4f9d-8f2b-6b2d1c8a9e5f"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "CoreDNS Configuration Poisoning",
+        "MITM via Sidecar Container Deployment",
+        "MITM via Service Modification",
+        "MITM via Modifying Pod's 'status.podIP'",
+        "MITM via ARP-Spoofing",
+        "MITM via CVE-2020-8554"
+      ]
+    },
+    {
+      "source": "S-800",
+      "target": "S-801",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "8f2c6a3e-1b74-4e9a-9c5d-0a7e3b2f6d91"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "ConfigMap Abuse for Code/Config Injection"
+      ]
+    },
+    {
+      "source": "S-800",
+      "target": "S-802",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "e3b7a6f2-9c4d-4b8e-8a1f-2d6c5e9b7a04",
+        "7a9c3e2f-4b61-4f8e-9d0a-1c6b5e8a2f34"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Unusable Namespace via Restrictive ResourceQuotas",
+        "Unusable Namespace via Restrictive LimitRanges"
+      ]
+    },
+    {
+      "source": "S-800",
+      "target": "S-803",
+      "misconfigurationIds": [],
+      "attackIds": [
+        "5d8a9c3e-1f24-4b6d-9a72-0e6c1b8f4a93",
+        "0e6f4c9a-2b7d-4a5e-9c31-8d5f2a6b1e74"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Delete Resources (delete/deletecollection)",
+        "Modify Resources (patch/update)"
+      ]
+    },
+    {
+      "source": "S-950",
+      "target": "S-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Privilege escalation in the Containers Realm is exhausted"
+      ]
+    },
+    {
+      "source": "S-900",
+      "target": "S-950",
+      "misconfigurationIds": [
+        "Lax Pod Security Admission Settings"
+      ],
+      "attackIds": [
+        "6e2c9b8a-4f1d-4c3a-9e7b-1a5f8d0c2b74",
+        "a4c9b7e2-8d6f-4a3b-9c1e-7f2b5d0e6a91",
+        "4d2f9b1e-6c3a-4a58-9a7e-1b5f0c8e2d91",
+        "6b4e2a3f-8f6c-4e9b-b1c9-7a0e5d2c1f84"
+      ],
+      "type": "attack",
+      "edgeLabels": [
+        "Deploy a Privileged DaemonSet",
+        "Deploy Privileged Containers on Every Node"
+      ]
+    },
+    {
+      "source": "S-801",
+      "target": "S-800",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-802",
+      "target": "S-800",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-803",
+      "target": "S-800",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-804",
+      "target": "S-800",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "backtrack",
+      "edgeLabels": [
+        "Go back"
+      ]
+    },
+    {
+      "source": "S-999",
+      "target": "S-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Start Attack with Knowledge From Memory"
+      ]
+    },
+    {
+      "source": "S-999",
+      "target": "S-OP-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "realm_transition",
+      "edgeLabels": [
+        "Realm Transition"
+      ]
+    },
+    {
+      "source": "S-999",
+      "target": "S-AWS-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "realm_transition",
+      "edgeLabels": [
+        "Realm Transition"
+      ]
+    },
+    {
+      "source": "S-OP-000",
+      "target": "S-OP-100",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "black_box_attack",
+      "edgeLabels": []
+    },
+    {
+      "source": "S-OP-100",
+      "target": "S-OP-999",
+      "misconfigurationIds": [
+        "c4a8b7d2-5f3e-4a9c-9e61-2d8b0f7a6c35"
+      ],
+      "attackIds": [],
+      "type": "black_box_attack",
+      "edgeLabels": [
+        "Internal Network Reconnaissance",
+        "Network Lateral Movement",
+        "Sensitive Data Exfiltration",
+        "Sensitive Data Tampering",
+        "DoS Operations"
+      ]
+    },
+    {
+      "source": "S-OP-999",
+      "target": "T-900",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Privilege escalation in the On-Prem Realm is Exhausted"
+      ]
+    },
+    {
+      "source": "S-OP-999",
+      "target": "T-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "black_box_attack",
+      "edgeLabels": [
+        "The On-Prem Realm was Exploited"
+      ]
+    },
+    {
+      "source": "S-OP-999",
+      "target": "S-AWS-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "realm_transition",
+      "edgeLabels": [
+        "Exploiting the On-Prem Realm Allowed for Additional AWS Access"
+      ]
+    },
+    {
+      "source": "S-AWS-000",
+      "target": "S-AWS-100",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "black_box_attack",
+      "edgeLabels": []
+    },
+    {
+      "source": "S-AWS-100",
+      "target": "S-AWS-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "black_box_attack",
+      "edgeLabels": [
+        "Cloud Resource Reconnaissance",
+        "Cloud Lateral Movement",
+        "Cloud Data Exfiltration",
+        "Cloud Data Tampering",
+        "Cloud DoS Operations"
+      ]
+    },
+    {
+      "source": "S-AWS-999",
+      "target": "T-900",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Privilege escalation in the AWS Realm is Exhausted"
+      ]
+    },
+    {
+      "source": "S-AWS-999",
+      "target": "T-999",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "black_box_attack",
+      "edgeLabels": [
+        "The AWS Realm was Exploited"
+      ]
+    },
+    {
+      "source": "S-AWS-999",
+      "target": "S-OP-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "realm_transition",
+      "edgeLabels": [
+        "Exploiting the AWS Realm Allowed for Additional On-Prem-like Access"
+      ]
+    },
+    {
+      "source": "T-999",
+      "target": "STATE-CRED",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Credentials"
+      ]
+    },
+    {
+      "source": "T-999",
+      "target": "STATE-ENV",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Cluster and Cloud Resources",
+        "Memorize Principals and Permissions"
+      ]
+    },
+    {
+      "source": "T-999",
+      "target": "STATE-CTRL",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Controlled Workloads"
+      ]
+    },
+    {
+      "source": "T-999",
+      "target": "S-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Start Attack with Knowledge From Memory"
+      ]
+    }
+  ]
+}

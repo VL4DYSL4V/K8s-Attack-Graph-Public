@@ -1,0 +1,114 @@
+/* Ensure the app uses full viewport and main stretches */
+.kb-app {
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    margin: 0;
+    display: flex;
+}
+
+/* Sidebar stays fixed width; main takes everything else */
+.kb-sidebar {
+    flex: 0 0 340px;
+}
+
+.kb-main {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    overflow: auto;
+    position: relative;
+    padding: 16px;
+}
+
+
+.kb-search {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.5);
+    background: rgba(15, 23, 42, 0.96);
+    color: var(--text);
+    outline: none;
+}
+
+html[data-theme="light"] .kb-search {
+    background: #ffffff;
+    border-color: rgba(0, 0, 0, 0.5);
+    color: #000000;
+}
+
+.kb-list-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.kb-scroll {
+    overflow: auto;
+    min-height: 0;
+    padding-right: 6px;
+}
+
+.kb-section summary {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    padding: 6px 0;
+    color: var(--text);
+}
+
+.kb-count {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.kb-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.kb-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.kb-item {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.kb-item:hover {
+    color: var(--accent);
+    border-bottom-color: rgba(56, 189, 248, 0.65);
+}
+
+.kb-item-meta {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 2px;
+}
+
+.kb-empty {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.kb-status {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    opacity: 0.95;
+}

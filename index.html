@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Container Attacks Graph</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/style.css" />
+
+    <!-- Libraries -->
+    <script src="dependencies/cytoscape-3.30.1.min.js" defer></script>
+    <script src="dependencies/dagre-0.8.5.min.js" defer></script>
+    <script src="dependencies/cytoscape-dagre-2.5.0.js" defer></script>
+
+    <!-- App logic -->
+    <script src="scripts/app-state.js" defer></script>
+    <script src="scripts/status-bar.js" defer></script>
+    <script src="scripts/theme.js" defer></script>
+    <script src="scripts/layout.js" defer></script>
+    <script src="scripts/left-sidebar.js" defer></script>
+    <script src="scripts/attack-graph.js" defer></script>
+    <script src="scripts/right-sidebar.js" defer></script>
+    <script src="scripts/cy-graph.js" defer></script>
+    <script src="scripts/main.js" defer></script>
+</head>
+<body>
+<div class="app">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="title-row">
+                <div class="title-dot"></div>
+                <h1>Container Attacks Graph</h1>
+            </div>
+            <a id="kbLink" class="sidebar-link" href="attacks-and-misconfigurations.html" target="_blank" rel="noopener noreferrer">
+                ↗ Attacks & misconfigurations
+            </a>
+        </div>
+
+        <!-- Environment / Global controls -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Environment</span>
+                <span class="panel-tag">Graph source</span>
+            </div>
+            <div class="panel-body">
+                <div class="env-row">
+                    <div class="env-select-wrapper">
+                        <label for="envSelect">Attack graph</label>
+                        <select id="envSelect"></select>
+                    </div>
+                </div>
+                <p class="help-text">
+                    Graphs are loaded from <code>assets/attack-graphs/</code>
+                </p>
+                <div class="btn-row">
+                    <button id="btn-relayout" class="btn btn-ghost" type="button">
+                        <span class="btn-icon">↻</span> Reset layout
+                    </button>
+                    <button id="btn-save-layout" class="btn btn-ghost" type="button">
+                        <span class="btn-icon">💾</span> Save layout
+                    </button>
+                </div>
+                <div class="btn-row">
+                    <button id="btn-download-layout" class="btn btn-ghost" type="button">
+                        ⬇ Download JSON
+                    </button>
+                </div>
+                <div class="btn-row">
+                    <label>
+                        <input type="checkbox" id="chkHideGoBackLabels" />
+                        Hide “Go back” edges
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Search</span>
+                <span class="panel-tag">Find node</span>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <label for="nodeSearchSelect">Node</label>
+                    <select id="nodeSearchSelect">
+                        <option value="">Select a node…</option>
+                    </select>
+                </div>
+                <div class="btn-row">
+                    <button id="btn-node-search" class="btn btn-primary" type="button">
+                        <span class="btn-icon">🔍</span> Find & zoom
+                    </button>
+                    <button id="btn-node-search-clear" class="btn btn-ghost" type="button">
+                        <span class="btn-icon">✕</span> Clear filter
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Neighbourhood panel -->
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Neighbourhood view</span>
+                <span class="panel-tag">Node + neighbours</span>
+            </div>
+            <div class="panel-body">
+                <div>
+                    <label for="focusNodeSelect">Focus node</label>
+                    <select id="focusNodeSelect">
+                        <option value="">Select a node…</option>
+                    </select>
+                    <div style="margin-top: 6px;">
+                        <label>
+                            <input type="checkbox" id="chkGatherNeighbours" />
+                            Gather neighbours around node
+                        </label>
+                    </div>
+                </div>
+                <div class="btn-row">
+                    <button id="btn-neighbourhood" class="btn btn-primary" type="button">
+                        <span class="btn-icon">◎</span> Show neighbourhood
+                    </button>
+                    <button id="btn-neighbourhood-clear" class="btn btn-ghost" type="button">
+                        <span class="btn-icon">✕</span> Clear filter
+                    </button>
+                </div>
+                <p class="help-text">
+                    Shows only the selected node and its 1-hop neighbours (incoming + outgoing).
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <div id="cy">
+        <!-- Theme toggle in top-right of graph pane -->
+        <button id="theme-toggle" class="theme-toggle" type="button">Dark</button>
+    </div>
+
+    <aside id="edgeSidebar" class="sidebar edge-sidebar is-hidden" aria-label="Edge details">
+        <div class="edge-sidebar-header">
+            <div class="title-row">
+                <div class="title-dot"></div>
+                <h1>Edge details</h1>
+            </div>
+
+            <button id="edgeSidebarClose" class="btn btn-ghost edge-sidebar-close" type="button" aria-label="Close">
+                ✕
+            </button>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Attacks</span>
+                <span class="panel-tag" id="edgeSidebarAttacksCount">0</span>
+            </div>
+            <div class="panel-body">
+                <ul id="edgeSidebarAttacks" class="edge-list"></ul>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <span class="panel-title">Misconfigurations</span>
+                <span class="panel-tag" id="edgeSidebarMisconfigsCount">0</span>
+            </div>
+            <div class="panel-body">
+                <ul id="edgeSidebarMisconfigs" class="edge-list"></ul>
+            </div>
+        </div>
+
+        <p class="hint-inline" id="edgeSidebarHint"></p>
+    </aside>
+
+</div>
+
+<!-- Fixed zoom controls -->
+<div class="zoom-controls">
+    <button id="btn-zoom-in" class="zoom-btn" type="button">＋</button>
+    <button id="btn-zoom-out" class="zoom-btn" type="button">－</button>
+    <button id="btn-zoom-fit" class="zoom-btn" type="button">Fit</button>
+    <button id="btn-zoom-center" class="zoom-btn" type="button">Ctr</button>
+    <button id="btn-zoom-reset" class="zoom-btn" type="button">1×</button>
+</div>
+</body>
+</html>

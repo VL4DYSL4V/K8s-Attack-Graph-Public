@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Attacks & Misconfigurations</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/knowledge-base.css" />
+
+    <script src="scripts/status-bar.js" defer></script>
+    <script src="scripts/theme.js" defer></script>
+    <script src="scripts/attacks-and-misconfigurations.js" defer></script>
+</head>
+
+<body>
+<div class="app kb-app">
+    <aside class="sidebar kb-sidebar">
+        <div class="sidebar-header">
+            <div class="title-row">
+                <div class="title-dot"></div>
+                <h1>Knowledge Base</h1>
+            </div>
+            <a
+                    class="sidebar-link"
+                    href="index.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+            >
+                ↗ Open the Attack Graph
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="kb-main" id="kbMain">
+        <button id="theme-toggle" class="theme-toggle" type="button">Dark</button>
+
+        <header class="kb-header">
+            <h2 class="kb-title">Attacks & Misconfigurations</h2>
+
+            <div class="kb-controls">
+                <input
+                        id="kbSearch"
+                        class="kb-search"
+                        type="text"
+                        placeholder="Search by name or id…"
+                        autocomplete="off"
+                />
+                <div class="kb-meta">
+                    <span class="panel-tag" id="kbCounts">—</span>
+                </div>
+            </div>
+
+            <p class="help-text" id="kbSourceHint"></p>
+        </header>
+
+        <section class="kb-content">
+            <details open class="kb-section">
+                <summary>
+                    <span>Attacks</span>
+                    <span class="kb-count" id="attacksCount">0</span>
+                </summary>
+                <ul id="attacksList" class="kb-list"></ul>
+            </details>
+
+            <details open class="kb-section">
+                <summary>
+                    <span>Misconfigurations</span>
+                    <span class="kb-count" id="misconfigsCount">0</span>
+                </summary>
+                <ul id="misconfigsList" class="kb-list"></ul>
+            </details>
+        </section>
+    </main>
+</div>
+</body>
+</html>

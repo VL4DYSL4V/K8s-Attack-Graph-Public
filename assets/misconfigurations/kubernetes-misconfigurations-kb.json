@@ -1,0 +1,486 @@
+{
+  "misconfigurations": [
+    {
+      "id": "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
+      "name": "Hardcoded Credentials in Containers",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Containers that embed passwords, API keys, or tokens expose sensitive secrets to anyone able to pull the image or gain\naccess to a running pod. These credentials often propagate across multiple environments through CI/CD and image\npromotion pipelines, making revocation difficult. Attackers can extract secrets from either image layers or live\ncontainers. Hardcoded credentials break all secret rotation processes and weaken incident response.",
+      "attacker_gains": [],
+      "impact": "Read-only access to images or code execution in the affected container allows for recovering hardcoded authentication materials.\nAttackers can use them to impersonate CI systems, tamper with source code, access private repositories, escalate privileges\nwithin the environment or laterally move to cloud. Build systems may be compromised, enabling widespread injection attacks.\nStolen non-expiring credentials provide persistent access across multiple stages of the SDLC.",
+      "prerequisites": {
+        "_or": [
+          "Read-only access to the image repository",
+          "Code execution in a container via any of the `workload_code_execution` technique."
+        ]
+      },
+      "recommendations": "Store secrets outside the build environment using external secret managers such as HashiCorp Vault\nor cloud-native key vault (e.g., AWS SecretsManager). Ensure applications retrieve secrets at runtime and keep them only\nin memory, avoiding the filesystem or image layers. Enforce automated secret scanning across CI logs, build contexts\nand image layers, and block builds if secrets are detected. Rotate all build-time credentials frequently, revoke long-lived tokens,\nand ensure leaked credentials trigger immediate rotation and invalidation. Maintain strict access controls on CI/CD environments\nand source code repositories to minimize the chance of credential exposure.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "5e3a9c41-7d2f-4a6b-8c0e-1f9b2a6d4e73",
+      "name": "Containers with Useful Binaries (curl, wget, netcat, bash)",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Containers containing full Linux distributions or common administrative tools give attackers powerful built-in\ncapabilities without requiring any additional payloads. Utilities such as `curl`, `wget`, `bash`, `python`, or `netcat` enable\ninteractive shells, internal scanning, tunneling, or downloading secondary payloads. Distroless containers, by\ncontrast, sharply limit post-exploitation capabilities by removing these tools entirely. Tool-rich containers allow\nattackers to “live off the land” within the workload. This makes intrusion stealthier and faster.",
+      "attacker_gains": [],
+      "impact": "Attackers gain immediate reconnaissance, tunneling, and exfiltration ability. They can contact internal or external\nservices, craft reverse shells, or download malware. Monitoring and incident response become harder to implement because actions\nuse built-in legitimate binaries. In addition, the exploitation speed increases significantly when the tools are already available\nin the compromised container.",
+      "prerequisites": "Code execution in a container via any of the `workload_code_execution` technique.",
+      "recommendations": "Use distroless or minimal-base images in production to remove unnecessary tooling. Strip shells, package managers,\ncompilers, and networking utilities from runtime workloads and ensure they are only available in build or debug\nimages. Adopt image scanning to detect unexpected binaries. Consider applying seccomp, AppArmor, or SELinux profiles to\nrestrict available syscalls and reduce the impact of built-in tools. Use ephemeral debug containers (`kubectl debug`)\nfor troubleshooting instead of shipping troubleshooting utilities in production images. Regularly audit images for drift\nto ensure that operational pipelines and base images do not reintroduce unwanted tools.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1588",
+          "name": "Obtain Capabilities",
+          "tactics": [
+            "Resource Development"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "6b3f8c2e-4a9d-4f71-8c5e-1a0d9e7b2f64",
+      "name": "Hardcoded Credentials in Image Build Specs",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Dockerfiles, CI/CD pipeline scripts, or build specification files that embed secrets leak those values into build\nlogs, layer history, and artifact metadata. Attackers with read-only access to the images, CI logs, or build environments can extract these\ncredentials even if they are removed from the last image layer. Such secrets may grant privileged access to code repositories,\nartifact registries, or cloud environments. Build-time exposures often remain undetected for long periods.",
+      "attacker_gains": [],
+      "impact": "Read-only access to images allows for recovering hardcoded authentication materials. Attackers can use them to\nimpersonate CI systems, tamper with source code, access private repositories, escalate privileges within the environment or laterally move to cloud.\nBuild systems may be compromised, enabling widespread injection attacks. Stolen non-expiring credentials provide persistent access across\nmultiple stages of the SDLC.",
+      "prerequisites": "Read-only access to the image repository",
+      "recommendations": "Store secrets outside the build environment using external secret managers such as HashiCorp Vault\nor cloud-native key vault (e.g., AWS SecretsManager). Ensure applications retrieve secrets at runtime and keep them only\nin memory, avoiding the filesystem or image layers. Enforce automated secret scanning across CI logs, build contexts\nand image layers, and block builds if secrets are detected. Rotate all build-time credentials frequently, revoke long-lived tokens,\nand ensure leaked credentials trigger immediate rotation and invalidation. Maintain strict access controls on CI/CD environments\nand source code repositories to minimize the chance of credential exposure.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "7c1e9a4b-3d5f-4f8a-b2c6-0e9d5a1c8f42",
+      "name": "Lax Network Policies",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "In the absence of NetworkPolicies, Kubernetes networks behave as a fully open, flat network in which any pod can reach\nany other pod, internal or external service. This allows attackers who compromise even a single workload to freely scan service\nports, interact with cloud metadata endpoints, or perform reconnaissance against internal management interfaces. Such\nclusters effectively lack network segmentation, making every namespace and workload reachable from every other. This\nbreakdown of network isolation removes a critical defense-in-depth boundary that Kubernetes expects.",
+      "attacker_gains": [],
+      "impact": "Once inside any compromised pod, attackers can pivot to databases, secrets stores, internal APIs, or even control-plane\ncomponents reachable on internal addresses. Attackers can also download tools for further exploitation, exfiltrate data,\nlaunch enumeration or credential brute-force attacks against internal APIs. In cloud environments, missing or lax network policies\ncan allow for access to IMDS endpoints, enabling unauthorized access to the cloud account and facilitating privilege escalation\nwithin the Kubernetes cluster.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Implement default-deny Network Policies for both ingress and egress across all namespaces. Explicitly authorize only\nrequired communications. Block access to metadata endpoints and control-plane internal addresses. Regularly audit\nnamespaces that are missing or bypassing network isolation rules. Ensure that pods do not run as `privileged` or with `hostNetwork: true`\nas these configurations allow the pod to ignore any Network Policies. If workloads require these permissions, they must be segregated\nonto separate, tightly monitored node group that is not reachable from the untrusted IP ranges.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1595",
+          "name": "Active Scanning",
+          "tactics": [
+            "Discovery"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "8c2f6b41-9a3e-4d1c-b7e5-0f6a9d3c2e84",
+      "name": "Encryption at Rest is Not Enabled",
+      "environment": [
+        "ON-PREM"
+      ],
+      "description": "When ETCD is not configured with encryption-at-rest, all stored Kubernetes Secrets and sensitive API objects are written\nto disk in plaintext. Any attacker who gains filesystem access to a control-plane node (e.g., through a node compromise,\nbackup leak, or misconfigured hostPath) can immediately extract service account tokens, TLS private keys, cloud\ncredentials, and application secrets. This bypasses all RBAC and pod-level isolation because secret confidentiality\ncollapses entirely once an attacker reaches ETCD’s storage volume. Lightweight Kubernetes distributions such as k3s\nexacerbate this issue, because they often use a single-file embedded datastore (`/var/lib/rancher/k3s/k3s.db`) that is\nalso unencrypted unless explicitly configured, making it easier to access or exfiltrate. Lack of encryption also facilitates\nUnauthorized object creation as described in `ETCD Abuse` techniques.",
+      "attacker_gains": [],
+      "impact": "Attackers can impersonate any ServiceAccount, extract all Secrets, and reconstruct every credential, token,\nor certificate within the cluster. They can also generate arbitrary new identities, forge privileged bindings, or create\nbackdoored workloads by writing directly to ETCD. Because ETCD and k3s datastores contain the raw authoritative state of\nthe cluster, compromise of these files enables immediate and total cluster takeover with no need to exploit API\npermissions. Even partial leakage (such as a single snapshot) may be enough to fully compromise the environment.\nPlaintext storage therefore turns any local host breach, backup leak, or misconfigured volume mount into a\ncontrol-plane-level incident.",
+      "prerequisites": {
+        "_or": [
+          "Filesystem-level access to ETCD data directories or k3s datastore files",
+          "Possession of a snapshot from backups, storage plugins, or node volumes.",
+          "Valid credentials that allow for authenticating to ETCD over the network"
+        ]
+      },
+      "recommendations": "Enable encryption-at-rest for ETCD using strong keys stored in a hardware-backed KMS or HSM, and ensure key rotation is\nenforced as part of cluster maintenance. For k3s, adopt external datastore backends or enable encryption hooks to\navoid leaving `k3s.db` in plaintext. Restrict shell or SSH access to control-plane nodes, enforce disk encryption, and\ntightly control access to backups and node volumes that may contain ETCD snapshots. Monitor for unusual access to ETCD\ndirectories and ensure operational tooling never stores snapshots unencrypted. Prevent hostPath access to control-plane\nvolumes under all circumstances.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "9c4b2f6e-8a3d-4e7f-b1a9-0f6d2e8c5a41",
+      "name": "Containers with Automounted Service Account Tokens",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "When ServiceAccount tokens are automounted into every pod by default, workloads receive API credentials they may not\nneed. Attackers compromising these workloads can steal tokens and authenticate directly to the Kubernetes API server.\nEven if the token only grants minimal permissions, it provides a reliable foothold for reconnaissance or privilege\nescalation. Many real-world clusters unintentionally allow broad read access through default SA tokens. Disabling\nautomounting where unnecessary significantly reduces attack surface.",
+      "attacker_gains": [],
+      "impact": "Token theft enables direct interaction with the cluster’s control plane. Weak default ServiceAccounts may\nreveal sensitive metadata, resource layouts, or even allow modifying cluster components. Stolen tokens can be replayed\nfrom outside the cluster if the API server is externally reachable.",
+      "prerequisites": {
+        "_and": [
+          "Network access to the Kube-API server",
+          "Code execution in a pod via any `workload_code_execution` technique"
+        ]
+      },
+      "recommendations": "Disable automounting for pods that do not require API access. Use workload-specific ServiceAccounts with strictly\nminimal permissions. Audit for automountServiceAccountToken misconfigurations. Rotate and scope ServiceAccounts\neffectively.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22",
+      "name": "Hardcoded Credentials in IMDS Startup Scripts",
+      "environment": [
+        "AWS"
+      ],
+      "description": "EC2 instances often rely on user-data or cloud-init startup scripts to bootstrap workloads, configure agents, or deploy applications. When these scripts contain hardcoded passwords, API keys, tokens, or long-lived cloud credentials, the secrets become accessible through multiple exposure paths. Startup scripts are stored in instance metadata, configuration management systems, AMIs, backups, and infrastructure-as-code repositories. Any party able to access the instance metadata service (IMDS), snapshots, logs, or the original provisioning artifacts can recover these credentials.",
+      "attacker_gains": [],
+      "impact": "An attacker with access to the EC2 Instance Metadata Service (IMDS), compromised workloads on the instance, or read access to infrastructure repositories can extract hardcoded credentials from startup scripts. These credentials may grant access to cloud APIs, CI/CD systems, databases, or third-party services. Since startup scripts are frequently reused across environments, compromised credentials can enable lateral movement across accounts, persistence beyond instance lifetime, privilege escalation in cloud environments, and long-term access due to missing rotation or revocation.",
+      "prerequisites": {
+        "_or": [
+          "Ability to access EC2 IMDS from a workload or the host",
+          "Read access to AMIs, snapshots, backups, or infrastructure-as-code repositories containing startup scripts",
+          "Compromise of an EC2 instance or container running on the instance"
+        ]
+      },
+      "recommendations": "Avoid embedding secrets in user-data or cloud-init scripts. Use IAM roles and temporary credentials obtained via IMDS instead of static credentials wherever possible. Retrieve secrets at runtime from managed secret stores such as AWS Secrets Manager or AWS Systems Manager Parameter Store with encryption enabled. Restrict IMDS access using IMDSv2 and hop limits, and block pod-level access to IMDS where not required. Implement automated scanning for secrets in infrastructure-as-code, user-data templates, AMIs, and configuration repositories. Rotate and revoke any credentials found to be exposed immediately, and enforce short-lived credentials with strict least-privilege policies.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91",
+      "name": "Kube-API Server Accessible from a Broad IP Range",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Exposing the Kubernetes API server to broad CIDR ranges (especially the Internet) removes critical network-based\nprotections and allows an attacker anywhere in the world to perform authentication attempts or API probing. Exposed\nKube-API server endpoints facilitate lateral movement into Kubernetes after exploiting other vulnerabilities (e.g., an attacker can exploit\na Local File Inclusion vulnerability to read a ServiceAccount token and then use the token to access Kubernetes APIs).\nIn addition, stolen kubeconfigs or leaked tokens become much more dangerous because they can be used from\nany location. Broad API exposure transforms the API server into a public-facing attack surface.",
+      "attacker_gains": [],
+      "impact": "Network access to the Kube-API server endpoints facilitates lateral movement into Kubernetes after exploiting\nother vulnerabilities. Leaked authentication materials (e.g., Service account tokens, certificates, kubeconfig files,\nkubelet bootstrap tokens) can be abused by external attackers to enumerate, gain code execution in containers, or even to\ncompletely compromise the cluster. The authentication materials can be obtained in a number of ways, e.g., exploiting SSRf or\nLocal File Inclusion, unauthorized access to code repositories or credential vaults, infostealer logs etc.",
+      "prerequisites": {
+        "_and": [
+          "Possession of a valid authentication material",
+          "RBAC permissions to enumerate or modify cluster resources"
+        ]
+      },
+      "recommendations": "Restrict API server access to internal networks, VPNs, or private endpoints. Disable anonymous access and require MFA\nfor changing the IP range allowlist if possible. Enable audit logging and alert on external API usage. Prefer cloud-native private API\nendpoints to completely remove external access paths.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactics": [
+            "Initial Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "b6e4d9f2-8c21-4a7a-9c3d-1f5a2e0b7c44",
+      "name": "User Namespace Remapping Disabled",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Container runtimes support user namespace remapping (`userns-remap`) to map container root users to non-root users on the host. When this feature is not enabled, processes running as root inside a container are also mapped to root on the host from the kernel’s perspective. This collapses a critical isolation boundary between containers and the host operating system. Many container escape techniques rely on this misconfiguration to translate in-container privileges directly into host-level impact.",
+      "attacker_gains": [],
+      "impact": "If an attacker gains code execution as root inside a container, the absence of user namespace remapping allows the attacker to interact with host resources using real root privileges. This significantly lowers the barrier for container escape, exploitation of kernel vulnerabilities, abuse of writable host mounts, and manipulation of device files. Successful exploitation can lead to full node compromise, persistence on the host, lateral movement to other workloads, and escalation to cluster-wide or cloud-level compromise.",
+      "prerequisites": {
+        "_or": [
+          "Code execution as root inside a container",
+          "Deployment of a privileged or misconfigured container",
+          "Ability to exploit a container runtime or kernel vulnerability from within a container"
+        ]
+      },
+      "recommendations": "Enable user namespace remapping (`userns-remap`) in the container runtime to ensure container root users are mapped to unprivileged host users. Combine user namespace isolation with dropping unnecessary Linux capabilities, enforcing seccomp and AppArmor or SELinux profiles, and avoiding privileged containers. Ensure host filesystem mounts are strictly read-only where required and avoid exposing sensitive device files to containers. Regularly audit container runtime configurations across all nodes and validate that security hardening settings are consistently applied. Test workloads for compatibility with user namespaces before production rollout.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1611",
+          "name": "Escape to Host",
+          "tactics": [
+            "Privilege Escalation"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "b7c9a4e1-2d6f-4a8e-9f3b-0c6d8e2a5f41",
+      "name": "Missing Authentication on Kubelet Endpoints",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Clusters that expose kubelet APIs (`10250`, `10255`) without proper authentication or TLS enforcement allow\nattackers to list pods, view logs, and read credentials, hardcoded into pods' manifests. It may also be possible to execute\nOS commands via kubelets' /run or /exec endpoints. Attackers can target any pod on the node regardless of namespace or RBAC\nrestrictions. This creates a parallel administrative path into the cluster.",
+      "attacker_gains": [],
+      "impact": "Attackers may read secrets, pivot into containers, or dump environment variables from any pod. Sensitive logs and\nruntime details become accessible. Kubelet exec-style access may provide full container takeover. Node-level\nreconnaissance and post-exploitation chains become trivial.",
+      "prerequisites": {
+        "_and": [
+          "Network access to a Kubelet API server",
+          "Kubelet does not require authentication"
+        ]
+      },
+      "recommendations": "Enforce TLS and authentication on all kubelet endpoints. Block access from untrusted networks. Disable read-only ports\naudit kubelet request patterns. Use firewall rules or security groups to restrict access to cluster operators only.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1609",
+          "name": "Container Administration Command",
+          "tactics": [
+            "Execution"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "b7e4c8a2-6d91-4c6a-9a3f-1f5b0a2d9c44",
+      "name": "Containers Running as Root",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Containers running as root inherit powerful Linux capabilities, unrestricted filesystem permissions, and access to\nsensitive kernel interfaces that unprivileged workloads cannot reach. This greatly expands the range of actions an\nattacker can take after gaining code execution inside the workload: they can interact with `/proc`, `/sys`, and\ndevice nodes, manipulate file ownership, and access privileged mount points. Root containers also facilitate hostPath mounts abuse\nwhen a sensitive folder was mounted from a node (e.g., `etc` or `sys`). Many container breakout exploits - such as those\nabusing cgroups, namespace transitions, or kernel bugs - require UID 0 inside the container to be reliably weaponized. As a result, a single\ncompromised root container represents an escalation path toward node compromise or cross-container lateral movement.",
+      "attacker_gains": [],
+      "impact": "Attackers can leverage root inside the container to create memory dumps of any process in the container and read or\nmodify any file within the container, including configuration files, application source code, or services that run in the background.\nRoot-level access facilitates tool installation, data exfiltration, and further enumeration of the environment from within the container.\nAlso, root-level access allows an attacker to reliably exploit sensitive hostPath mounts and perform operations that\ndepend on privileged syscalls. Kernel-level vulnerabilities and container escape CVEs become significantly\neasier to exploit when executed from a root context.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Enforce non-root users across all container images and block workloads without explicit user settings through policy\nengines or PSA restricted mode. Adopt SELinux and seccomp profiles to limit which files are accessible and which syscalls containers can\nperform, ensuring that even root workloads face mandatory access controls. In Docker-based environments, enable\nuserns-remap to map container root to an unprivileged UID on the host, reducing breakout risk.\nIn Kubernetes-based environments, use the \"user namespaces\" feature. Avoid granting CAP_SYS_ADMIN, CAP_NET_ADMIN,\nand other powerful capabilities unless absolutely necessary. Continuously audit for UID 0 usage and ensure that\noperational pipelines cannot reintroduce root defaults into production workloads.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1611",
+          "name": "Escape to Host",
+          "tactics": [
+            "Privilege Escalation"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "c4a8b7d2-5f3e-4a9c-9e61-2d8b0f7a6c35",
+      "name": "Lax Resource Consumption Limits",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Without CPU, memory, and ephemeral storage limits, a single compromised container can monopolize node resources and\nstarve neighboring workloads. Attackers can deliberately trigger out-of-memory (OOM) conditions, eviction storms, or\nnode-pressure scenarios that destabilize the entire cluster. Excessive resource usage also drives autoscaling\nmisbehavior, potentially creating unnecessary nodes or exhausting quotas. Attackers may use resource pressure to force\npods to reschedule onto attacker-preferred nodes. This subtly enables lateral movement through eviction-based\nscheduling manipulation.",
+      "attacker_gains": [],
+      "impact": "Critical workloads may be evicted, degraded, or permanently starved. Attackers can force workloads to migrate, disrupt\navailability, or undermine horizontal pod autoscaling. Unbounded ephemeral storage can disable node logging,\nmonitoring, or system daemons. Node stability degrades quickly under resource-intensive attacks. In addition, unconstrainted\nresource usage also drives autoscaling misbehavior, potentially creating unnecessary nodes or exhausting quotas which inflates\ninfrastructure costs.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Enforce LimitRanges and ResourceQuotas to constrain CPU, memory, and storage consumption. Ensure critical namespaces\nhave conservative limits to prevent noisy-neighbor effects. Monitor nodes for resource spikes and correlate with pod\nrestarts and evictions. Use autoscaler safeguards to avoid runaway provisioning.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1499",
+          "name": "Endpoint DoS",
+          "tactics": [
+            "Impact"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "c4e9b2a7-1d6f-4a83-9f5c-8b0e2a1d7f63",
+      "name": "Hardcoded Credentials in Kubernetes Deployment Manifests",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Kubernetes deployment manifests frequently define environment variables, command-line arguments, or configuration values required by applications at runtime. When these manifests embed hardcoded credentials such as passwords, API keys, tokens, or certificates directly into Pod, Deployment, StatefulSet, or DaemonSet specifications, the secrets become part of the cluster’s declarative configuration. These credentials are often stored in version control systems, CI/CD pipelines, artifact repositories, and backups, and may be visible to any principal with read access to workload manifests. Hardcoding credentials in manifests bypasses Kubernetes secret management mechanisms and significantly increases the risk of widespread credential exposure.",
+      "attacker_gains": [
+        "kubernetes_credentials",
+        "cloud_credentials",
+        "hardcoded_credentials"
+      ],
+      "impact": "An attacker with read access to Kubernetes workload manifests, access to the Kubernetes API, or compromise of a CI/CD system can extract hardcoded credentials directly from deployment specifications. These credentials may grant access to internal services, databases, message queues, cloud APIs, or third-party systems. Because manifests are frequently reused across namespaces, clusters, and environments, leaked credentials can enable lateral movement, impersonation of applications, escalation to higher-privilege workloads, or compromise of external infrastructure. Once exposed, these credentials are difficult to fully revoke due to manifest propagation, cached configurations, and long-lived tokens, often resulting in persistent access for the attacker.",
+      "prerequisites": {
+        "_and": [
+          "Permissions to `get` / `list` / `watch` the affected kubernetes resource",
+          "Network access to the Kubernetes API server or access to the source repository containing the manifests."
+        ]
+      },
+      "recommendations": "Never embed credentials directly in Kubernetes manifests. Use Kubernetes Secrets or external secret management systems such as AWS Secrets Manager, HashiCorp Vault, or cloud-native key vaults, and inject secrets at runtime using environment variables or volume mounts. Enforce automated secret scanning on infrastructure-as-code repositories, CI/CD pipelines, and rendered manifests before deployment. Apply strict RBAC controls to limit who can read workload specifications, and avoid granting list permissions on workloads to non-administrative principals. Rotate and revoke any credentials discovered in manifests immediately, and prefer short-lived credentials and workload identity mechanisms to reduce blast radius.",
+      "cwe": [
+        {
+          "id": "CWE-200",
+          "name": "Exposure of Sensitive Information",
+          "link": "https://cwe.mitre.org/data/definitions/200.html"
+        },
+        {
+          "id": "CWE-522",
+          "name": "Insufficiently Protected Credentials",
+          "link": "https://cwe.mitre.org/data/definitions/522.html"
+        }
+      ],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        },
+        {
+          "id": "T1087",
+          "name": "Account Discovery",
+          "tactics": [
+            "Discovery"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "e2f7c9b4-6d1a-4b5e-9a3c-0f8e2d7b6a41",
+      "name": "Lack of Mutual TLS (mTLS) Between Pods",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "When inter-pod traffic is not protected with mutual TLS, workloads implicitly trust the network and exchange data\nin plaintext or with unauthenticated encryption. This makes all service-to-service communication vulnerable to passive\ninterception and active manipulation by any workload that gains the ability to observe or redirect traffic. Without\nmTLS, pods cannot verify the identity of their peers, allowing attackers to impersonate services, spoof endpoints, or\ninject altered responses into service meshes. Many Kubernetes networks rely solely on IP-based identity or namespace\nseparation, neither of which provides any cryptographic assurance.",
+      "attacker_gains": [],
+      "impact": "Attackers can perform credential theft, session hijacking, and protocol manipulation by intercepting or tampering with\nunprotected traffic between services. Sensitive data (e.g., API keys, OAuth tokens, database credentials, or\napplication secrets) may be exposed in transit. The lack of mTLS enables every attack in the\n`Adversary-in-the-Middle Against Workloads` category to succeed with minimal friction, including ARP spoofing, service hijacking,\nCoreDNS poisoning, and IP/endpoint spoofing. The trust boundary collapses because nothing validates the identities of\ncommunicating services.",
+      "prerequisites": "Adjacent access to the cluster network",
+      "recommendations": "Enforce mutual TLS for all inter-service communication using a service mesh on top of eBPF, such as Cilium.\nRequire certificate-based workload identity so each service can authenticate its peers.\nReject plaintext or unauthenticated traffic through admission policies and application-level controls. Regularly audit\nnamespaces and services to ensure that mTLS is enabled and enforced cluster-wide. Combine mTLS with NetworkPolicies to\nlimit lateral movement and block traffic from unauthorized workloads.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1557",
+          "name": "Adversary-in-the-Middle",
+          "tactics": [
+            "Credential Access",
+            "Collection"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "e3b7a2c9-5f41-4d8e-9a62-1c0f8b6d4a91",
+      "name": "Hardcoded Credentials on Kubernetes Nodes",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Kubernetes worker and control-plane nodes can contain hardcoded credentials introduced during manual administration, debugging, bootstrapping, or incident response. Operators may export cloud credentials, API tokens, database passwords, or service secrets directly into shell environments, scripts, or configuration files on the node. These credentials can persist unintentionally in shell history files, language-specific REPL histories (e.g., Python), temporary scripts, or home directories. Once written to disk, such secrets frequently may survive reboots, user sessions, and even partial node remediation, creating a long-lived exposure surface on the host.",
+      "attacker_gains": [
+        "kubernetes_credentials",
+        "cloud_credentials",
+        "hardcoded_credentials"
+      ],
+      "impact": "An attacker who achieves node-level access—through container escape, privileged workload abuse, or compromised SSH access can recover hardcoded credentials left behind by administrators or automation. These credentials may grant access to cloud control planes, container registries, CI/CD systems, internal services, or other Kubernetes clusters. Because node access often implies high trust, the discovered credentials are frequently over-privileged and long-lived, enabling rapid lateral movement, persistence beyond node lifetime, escalation to cluster-admin, or full cloud account compromise. Credential exposure on nodes is particularly dangerous because it is rarely monitored, difficult to audit retroactively, and often overlooked during incident response.",
+      "prerequisites": {
+        "_or": [
+          "Node-level shell access (SSH or console)",
+          "Code execution on the node via container escape or privileged workload",
+          "Read access to node filesystems via hostPath mounts, runtime socket abuse, or /var/log abuse"
+        ]
+      },
+      "recommendations": "Never store credentials directly on Kubernetes nodes. Use workload identity mechanisms, IAM roles, and short-lived credentials instead of static secrets. Enforce strict operational hygiene: avoid exporting secrets into shells, remove ad-hoc scripts after use, and disable persistent shell histories where possible. Regularly scan nodes for known credential patterns and sensitive files, and include node home directories in incident response playbooks. Rotate and revoke any credentials discovered on nodes immediately. Limit node access to a minimal set of trusted operators, and prefer immutable node images with automated provisioning over manual configuration.",
+      "cwe": [
+        {
+          "id": "CWE-522",
+          "name": "Insufficiently Protected Credentials",
+          "link": "https://cwe.mitre.org/data/definitions/522.html"
+        },
+        {
+          "id": "CWE-200",
+          "name": "Exposure of Sensitive Information",
+          "link": "https://cwe.mitre.org/data/definitions/200.html"
+        }
+      ],
+      "mitre": [
+        {
+          "id": "T1552",
+          "name": "Unsecured Credentials",
+          "tactics": [
+            "Credential Access"
+          ]
+        },
+        {
+          "id": "T1078",
+          "name": "Valid Accounts",
+          "tactics": [
+            "Initial Access",
+            "Persistence"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91",
+      "name": "Lax Pod Security Admission Settings",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Weak or misconfigured Pod Security Admission (PSA) allows workloads to request privileged fields such as running as\nroot, using hostPath, enabling privileged mode, or entering host namespaces. PSA exemptions or namespaces configured\nin “privileged” mode create blind spots where dangerous workloads can run freely. Attackers exploiting RCE in such\nworkloads gain immediate access to escalated capabilities. PSA misconfiguration neutralizes core cluster isolation\nguarantees. It significantly increases the success rate of host-escape and privilege-escalation attacks.",
+      "attacker_gains": [],
+      "impact": "Attackers may escape containers, access host filesystems, or manipulate sensitive volumes. Security boundaries\ncollapse, allowing escalation from workload compromise into node compromise. HostPath abuse and privileged-mode\nmisuse become trivial. Techniques such as `Deploy Container via Workload Controllers` can be abused to achieve cluster-wide RCE on every node.",
+      "prerequisites": {
+        "_and": [
+          "Network access to the Kube-API server",
+          "Possessing any permissions described in the `Deploy Container via Workload Controllers` technique."
+        ]
+      },
+      "recommendations": "Enforce Pod Security Admission in every non-privileged namespace that hosts customer-facing workloads.\nEnsure that the setting is `pod-security.kubernetes.io/enforce = restricted` to disallow privileged containers,\nhost-path mounts, container running as root, hostPID, hostIPC, and hostNetwork. This effectively prevents host escape\nvectors through privileged Kubernetes containers. Regularly audit all namespaces for PSA drift or privilege creep.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1611",
+          "name": "Escape to Host",
+          "tactics": [
+            "Privilege Escalation"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    }
+  ]
+}
