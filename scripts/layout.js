@@ -1,7 +1,7 @@
 const LAYOUT_PREFIX = "attackGraphLayout-";
 
 function canonicalLayoutPath(envKey) {
-    return `/assets/layouts/layout-${envKey}.json`;
+    return `assets/layouts/layout-${envKey}.json`;
 }
 
 const runLayout = ({ cy }) => () => {
