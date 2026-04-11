@@ -64,7 +64,7 @@
 
                 addLinkItem({
                     ul: attacksUl,
-                    href: `/kb-item.html?id=${encodeURIComponent(id)}&knowledgebasePath=${encodeURIComponent(appState.getConfig().attacksKbFile)}`,
+                    href: `./kb-item.html?id=${encodeURIComponent(id)}&knowledgebasePath=${encodeURIComponent(appState.getConfig().attacksKbFile)}`,
                     text: name
                 });
             });
@@ -78,7 +78,7 @@
 
                 addLinkItem({
                     ul: misUl,
-                    href: `/kb-item.html?id=${encodeURIComponent(id)}&knowledgebasePath=${encodeURIComponent(appState.getConfig().misconfigurationsKbFile)}`,
+                    href: `./kb-item.html?id=${encodeURIComponent(id)}&knowledgebasePath=${encodeURIComponent(appState.getConfig().misconfigurationsKbFile)}`,
                     text: name
                 });
             });

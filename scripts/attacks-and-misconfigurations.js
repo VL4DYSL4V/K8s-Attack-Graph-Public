@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 items: attacks,
                 onClick: (x) => {
                     // Not implemented yet — stub navigation point:
-                    window.open(`kb-item.html?id=${encodeURIComponent(x.id)}&knowledgebasePath=${encodeURIComponent(attacksHref)}`, "_blank");
+                    window.open(`./kb-item.html?id=${encodeURIComponent(x.id)}&knowledgebasePath=${encodeURIComponent(attacksHref)}`, "_blank");
                 },
             });
 
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 items: misconfigs,
                 onClick: (x) => {
                     // Not implemented yet — stub navigation point:
-                    window.open(`kb-item.html?id=${encodeURIComponent(x.id)}&knowledgebasePath=${encodeURIComponent(misconfigurationsHref)}`, "_blank");
+                    window.open(`./kb-item.html?id=${encodeURIComponent(x.id)}&knowledgebasePath=${encodeURIComponent(misconfigurationsHref)}`, "_blank");
                 },
             });
         };
