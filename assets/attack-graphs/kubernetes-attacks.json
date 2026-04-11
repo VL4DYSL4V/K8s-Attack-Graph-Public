@@ -1,18 +1,18 @@
 {
   "nodes": [
     {
-      "id": "REALM_CONTAINER",
-      "label": "Container Realm",
+      "id": "REALM_WORKLOAD",
+      "label": "Workload Realm",
       "type": "realm"
     },
     {
-      "id": "REALM_AWS",
-      "label": "AWS Realm",
+      "id": "REALM_AWS_MANAGEMENT",
+      "label": "AWS-Management Realm",
       "type": "realm"
     },
     {
-      "id": "REALM_ON_PREM",
-      "label": "On-Prem Realms",
+      "id": "REALM_INFRASTRUCTURE",
+      "label": "Infrastructure Realm",
       "type": "realm"
     },
     {
@@ -21,188 +21,184 @@
       "type": "realm"
     },
     {
-      "id": "S-000",
+      "id": "Q-000",
       "type": "step",
-      "label": "S-000: Container Realm Initial Access",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-000: Workload Realm Initial Access",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-100",
+      "id": "Q-100",
       "type": "step",
-      "label": "S-100: Container Execution",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-100: Container Execution",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-200",
+      "id": "Q-200",
       "type": "step",
-      "label": "S-200: Node Execution",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-200: Node Execution",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-300",
+      "id": "Q-300",
       "type": "step",
-      "label": "S-300: New Kubernetes Principal",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-300: New Kubernetes Principal",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-350",
+      "id": "Q-350",
       "type": "step",
-      "label": "S-350: New AWS Principal",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-350: New AWS Principal",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-600",
+      "id": "Q-600",
       "type": "step",
-      "label": "S-600: K8s Permissions and Resource Discovery",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-600: K8s Permissions and Resource Discovery",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-650",
+      "id": "Q-650",
       "type": "step",
-      "label": "S-650: RBAC Abuse for Privilege Escalation",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-650: RBAC Abuse for Privilege Escalation",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-651",
+      "id": "Q-651",
       "type": "step",
-      "label": "S-651: Privileged/Malicious Container Deployment",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-651: Privileged/Malicious Container Deployment",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-652",
+      "id": "Q-652",
       "type": "step",
-      "label": "S-652: Stealing Containers",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-652: Stealing Containers",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-653",
+      "id": "Q-653",
       "type": "step",
-      "label": "S-653: Assign Additional Permissions",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-653: Assign Additional Permissions",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-654",
+      "id": "Q-654",
       "type": "step",
-      "label": "S-654: Secret Discovery",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-654: Secret Discovery",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-700",
+      "id": "Q-700",
       "type": "step",
-      "label": "S-700: RBAC Abuse for Defence Bypass",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-700: RBAC Abuse for Defence Bypass",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-701",
+      "id": "Q-701",
       "type": "step",
-      "label": "S-701: Bypass Admission Controls",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-701: Bypass Admission Controls",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-702",
+      "id": "Q-702",
       "type": "step",
-      "label": "S-702: DoS Safeguards Removal",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-702: DoS Safeguards Removal",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-703",
+      "id": "Q-703",
       "type": "step",
-      "label": "S-703: Network Policies Bypass",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-703: Network Policies Bypass",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-800",
+      "id": "Q-800",
       "type": "step",
-      "label": "S-800: RBAC Post-Exploitation",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-800: RBAC Post-Exploitation",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-801",
+      "id": "Q-801",
       "type": "step",
-      "label": "S-801: Code/Config Injection",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-801: Code/Config Injection",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-802",
+      "id": "Q-802",
       "type": "step",
-      "label": "S-802: DoS via Tight Resource Limits",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-802: DoS via Tight Resource Limits",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-803",
+      "id": "Q-803",
       "type": "step",
-      "label": "S-803: DoS by Deleting or Modifying K8s Resources",
-      "parent": "REALM_CONTAINER"
+      "label": "Q-803: DoS by Deleting or Modifying K8s Resources",
+      "parent": "REALM_WORKLOAD"
     },
     {
-      "id": "S-804",
+      "id": "Q-804",
       "type": "step",
-      "label": "S-804: MITM Against Pods",
-      "parent": "REALM_CONTAINER"
-    },
-    {
-      "id": "S-900",
-      "type": "step",
-      "label": "S-900: Control plane Compromised",
-      "parent": "REALM_CONTAINER"
-    },
-    {
-      "id": "S-950",
-      "type": "step",
-      "label": "S-950: All worker nodes compromised",
-      "parent": "REALM_CONTAINER"
-    },
-    {
-      "id": "S-999",
-      "type": "step",
-      "label": "S-999: Container Realm Exploitation Exhausted for the Current Attack Cycle",
-      "parent": "REALM_CONTAINER"
-    },
-    {
-      "id": "S-AWS-000",
-      "type": "step",
-      "label": "S-AWS-000: AWS Realm Initial Access",
-      "parent": "REALM_AWS"
-    },
-    {
-      "id": "S-AWS-100",
-      "type": "step",
-      "label": "S-AWS-100: AWS Realm Exploitation",
-      "parent": "REALM_AWS"
-    },
-    {
-      "id": "S-AWS-999",
-      "type": "step",
-      "label": "S-AWS-999: AWS Realm Exploitation Exhausted for the Current Attack Cycle",
-      "parent": "REALM_AWS"
-    },
-    {
-      "id": "S-OP-000",
-      "type": "step",
-      "label": "S-OP-000: On-Prem Realm Initial Access",
-      "parent": "REALM_ON_PREM"
-    },
-    {
-      "id": "S-OP-100",
-      "type": "step",
-      "label": "S-OP-100: On-Prem Realm Exploitation",
-      "parent": "REALM_ON_PREM"
-    },
-    {
-      "id": "S-OP-999",
-      "type": "step",
-      "label": "S-OP-999: On-Prem Realm Exploitation Exhausted for the Current Attack Cycle",
-      "parent": "REALM_ON_PREM"
+      "label": "Q-804: AITM Against Pods",
+      "parent": "REALM_WORKLOAD"
     },
     {
       "id": "T-900",
       "type": "step",
-      "label": "T-900: All Realms Exploitation Exhausted"
+      "label": "T-900: Control plane Compromised",
+      "parent": "REALM_WORKLOAD"
+    },
+    {
+      "id": "T-950",
+      "type": "step",
+      "label": "T-950: All worker nodes compromised",
+      "parent": "REALM_WORKLOAD"
+    },
+    {
+      "id": "T-990",
+      "type": "step",
+      "label": "T-990: Workload Realm Exploitation Exhausted for the Current Attack Cycle",
+      "parent": "REALM_WORKLOAD"
+    },
+    {
+      "id": "Q-aws-000",
+      "type": "step",
+      "label": "Q-aws-000: AWS Realm Initial Access",
+      "parent": "REALM_AWS_MANAGEMENT"
+    },
+    {
+      "id": "Q-aws-100",
+      "type": "step",
+      "label": "Q-aws-100: AWS Realm Exploitation",
+      "parent": "REALM_AWS_MANAGEMENT"
+    },
+    {
+      "id": "T-aws-999",
+      "type": "step",
+      "label": "T-aws-999: AWS Realm Exploitation Exhausted for the Current Attack Cycle",
+      "parent": "REALM_AWS_MANAGEMENT"
+    },
+    {
+      "id": "Q-inf-000",
+      "type": "step",
+      "label": "Q-inf-000: Infrastructure Realm Initial Access",
+      "parent": "REALM_INFRASTRUCTURE"
+    },
+    {
+      "id": "Q-inf-100",
+      "type": "step",
+      "label": "Q-inf-100: Infrastructure Realm Exploitation",
+      "parent": "REALM_INFRASTRUCTURE"
+    },
+    {
+      "id": "T-inf-999",
+      "type": "step",
+      "label": "T-inf-999: Infrastructure Realm Exploitation Exhausted for the Current Attack Cycle",
+      "parent": "REALM_INFRASTRUCTURE"
     },
     {
       "id": "T-999",
       "type": "step",
-      "label": "T-999: Another Realm Exploit Elevates Privileges in the Container Realm"
+      "label": "T-999: Exploitation Exhausted",
+      "parent": "REALM_WORKLOAD"
     },
     {
       "id": "STATE-CRED",
@@ -224,12 +220,24 @@
       "type": "state",
       "stateCategory": "control",
       "parent": "REALM_MEMORY"
+    },
+    {
+      "id": "T-aws-900",
+      "type": "step",
+      "label": "T-aws-900: AWS Realm Exploit Elevates Privileges in the Workload Realm",
+      "parent": "REALM_AWS_MANAGEMENT"
+    },
+    {
+      "id": "T-inf-900",
+      "type": "step",
+      "label": "T-inf-900: Infrastructure Realm Exploit Elevates Privileges in the Workload Realm",
+      "parent": "REALM_INFRASTRUCTURE"
     }
   ],
   "edges": [
     {
-      "source": "S-000",
-      "target": "S-100",
+      "source": "Q-000",
+      "target": "Q-100",
       "misconfigurationIds": [
         "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91",
         "b7c9a4e1-2d6f-4a8e-9f3b-0c6d8e2a5f41"
@@ -247,8 +255,8 @@
       ]
     },
     {
-      "source": "S-000",
-      "target": "S-200",
+      "source": "Q-000",
+      "target": "Q-200",
       "misconfigurationIds": [
         "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91"
       ],
@@ -266,8 +274,8 @@
       ]
     },
     {
-      "source": "S-000",
-      "target": "S-300",
+      "source": "Q-000",
+      "target": "Q-300",
       "misconfigurationIds": [
         "a9e3c6b4-7f2d-4c8a-9b1e-5d0a6f8c2e91"
       ],
@@ -279,8 +287,8 @@
       ]
     },
     {
-      "source": "S-100",
-      "target": "S-350",
+      "source": "Q-100",
+      "target": "Q-350",
       "misconfigurationIds": [
         "7c1e9a4b-3d5f-4f8a-b2c6-0e9d5a1c8f42",
         "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22"
@@ -294,8 +302,8 @@
       ]
     },
     {
-      "source": "S-100",
-      "target": "S-200",
+      "source": "Q-100",
+      "target": "Q-200",
       "misconfigurationIds": [
         "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91",
         "5e3a9c41-7d2f-4a6b-8c0e-1f9b2a6d4e73",
@@ -325,8 +333,8 @@
       ]
     },
     {
-      "source": "S-100",
-      "target": "S-650",
+      "source": "Q-100",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -335,8 +343,8 @@
       ]
     },
     {
-      "source": "S-100",
-      "target": "S-654",
+      "source": "Q-100",
+      "target": "Q-654",
       "misconfigurationIds": [
         "7c1e9a4b-3d5f-4f8a-b2c6-0e9d5a1c8f42",
         "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
@@ -357,17 +365,17 @@
       ]
     },
     {
-      "source": "S-100",
-      "target": "S-999",
+      "source": "Q-100",
+      "target": "T-990",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
       "edgeLabels": [
-        "Privilege escalation in the Containers Realm is exhausted"
+        "Privilege escalation in the Workload Realm is exhausted"
       ]
     },
     {
-      "source": "S-100",
+      "source": "Q-100",
       "target": "STATE-CTRL",
       "misconfigurationIds": [],
       "attackIds": [],
@@ -378,8 +386,8 @@
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-100",
+      "source": "Q-200",
+      "target": "Q-100",
       "misconfigurationIds": [
         "5e3a9c41-7d2f-4a6b-8c0e-1f9b2a6d4e73"
       ],
@@ -393,8 +401,8 @@
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-350",
+      "source": "Q-200",
+      "target": "Q-350",
       "misconfigurationIds": [
         "9d3b6f41-2c7a-4f91-b8d2-5e1a6f8c0e22"
       ],
@@ -407,8 +415,8 @@
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-651",
+      "source": "Q-200",
+      "target": "Q-651",
       "misconfigurationIds": [
         "b6e4d9f2-8c21-4a7a-9c3d-1f5a2e0b7c44"
       ],
@@ -421,8 +429,8 @@
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-654",
+      "source": "Q-200",
+      "target": "Q-654",
       "misconfigurationIds": [
         "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
         "6b3f8c2e-4a9d-4f71-8c5e-1a0d9e7b2f64",
@@ -440,18 +448,18 @@
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-999",
+      "source": "Q-200",
+      "target": "T-990",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
       "edgeLabels": [
-        "Privilege escalation in the Containers Realm is exhausted"
+        "Privilege escalation in the Workload Realm is exhausted"
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-950",
+      "source": "Q-200",
+      "target": "T-950",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
@@ -460,8 +468,8 @@
       ]
     },
     {
-      "source": "S-200",
-      "target": "S-900",
+      "source": "Q-200",
+      "target": "T-900",
       "misconfigurationIds": [
         "8c2f6b41-9a3e-4d1c-b7e5-0f6a9d3c2e84"
       ],
@@ -476,7 +484,7 @@
       ]
     },
     {
-      "source": "S-200",
+      "source": "Q-200",
       "target": "STATE-CTRL",
       "bidirectional": true,
       "misconfigurationIds": [],
@@ -487,8 +495,8 @@
       ]
     },
     {
-      "source": "S-350",
-      "target": "S-300",
+      "source": "Q-350",
+      "target": "Q-300",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -497,8 +505,8 @@
       ]
     },
     {
-      "source": "S-300",
-      "target": "S-600",
+      "source": "Q-300",
+      "target": "Q-600",
       "misconfigurationIds": [],
       "attackIds": [
         "2f8c9a41-6d7e-4b0f-9e3a-1c5b7d8a0f22"
@@ -510,8 +518,8 @@
       ]
     },
     {
-      "source": "S-300",
-      "target": "S-650",
+      "source": "Q-300",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -520,7 +528,7 @@
       ]
     },
     {
-      "source": "S-300",
+      "source": "Q-300",
       "target": "STATE-CRED",
       "bidirectional": true,
       "misconfigurationIds": [],
@@ -531,8 +539,8 @@
       ]
     },
     {
-      "source": "S-350",
-      "target": "S-300",
+      "source": "Q-350",
+      "target": "Q-300",
       "misconfigurationIds": [],
       "attackIds": [
         "3d7f9a2c-4b61-4e8a-9f25-0c6b1e8d5a94"
@@ -543,8 +551,8 @@
       ]
     },
     {
-      "source": "S-350",
-      "target": "S-654",
+      "source": "Q-350",
+      "target": "Q-654",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -553,7 +561,7 @@
       ]
     },
     {
-      "source": "S-350",
+      "source": "Q-350",
       "target": "STATE-CRED",
       "bidirectional": true,
       "misconfigurationIds": [],
@@ -564,8 +572,8 @@
       ]
     },
     {
-      "source": "S-350",
-      "target": "S-100",
+      "source": "Q-350",
+      "target": "Q-100",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -574,8 +582,8 @@
       ]
     },
     {
-      "source": "S-350",
-      "target": "S-200",
+      "source": "Q-350",
+      "target": "Q-200",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -584,8 +592,8 @@
       ]
     },
     {
-      "source": "S-600",
-      "target": "S-650",
+      "source": "Q-600",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
@@ -594,8 +602,8 @@
       ]
     },
     {
-      "source": "S-600",
-      "target": "S-700",
+      "source": "Q-600",
+      "target": "Q-700",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
@@ -604,8 +612,8 @@
       ]
     },
     {
-      "source": "S-600",
-      "target": "S-800",
+      "source": "Q-600",
+      "target": "Q-800",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
@@ -614,17 +622,17 @@
       ]
     },
     {
-      "source": "S-600",
-      "target": "S-999",
+      "source": "Q-600",
+      "target": "T-990",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
       "edgeLabels": [
-        "Privilege escalation in the Containers Realm is exhausted"
+        "Privilege escalation in the Workload Realm is exhausted"
       ]
     },
     {
-      "source": "S-600",
+      "source": "Q-600",
       "target": "STATE-ENV",
       "bidirectional": true,
       "misconfigurationIds": [],
@@ -636,8 +644,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-100",
+      "source": "Q-650",
+      "target": "Q-100",
       "misconfigurationIds": [],
       "attackIds": [
         "2d7f1c4a-9b6e-4f8d-a3e2-6c9b0f1e5a47",
@@ -654,8 +662,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-300",
+      "source": "Q-650",
+      "target": "Q-300",
       "misconfigurationIds": [],
       "attackIds": [
         "5c9e2b6a-8f4d-4c31-9a72-1e6b0d8f3c54",
@@ -672,8 +680,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-600",
+      "source": "Q-650",
+      "target": "Q-600",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -682,8 +690,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-651",
+      "source": "Q-650",
+      "target": "Q-651",
       "misconfigurationIds": [
         "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91"
       ],
@@ -701,8 +709,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-652",
+      "source": "Q-650",
+      "target": "Q-652",
       "misconfigurationIds": [],
       "attackIds": [
         "6f1c9e2a-0d47-4a7b-9b85-8c3e4a9d2f61",
@@ -717,8 +725,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-653",
+      "source": "Q-650",
+      "target": "Q-653",
       "misconfigurationIds": [],
       "attackIds": [
         "c1e6b4f7-2a6d-4c2b-9b73-5f8e4d1a9c02",
@@ -733,8 +741,8 @@
       ]
     },
     {
-      "source": "S-650",
-      "target": "S-654",
+      "source": "Q-650",
+      "target": "Q-654",
       "misconfigurationIds": [
         "6b3f8c2e-4a9d-4f71-8c5e-1a0d9e7b2f64",
         "4a7c9e2d-1f8b-4c5a-9e6d-3b2f0a8c1d74",
@@ -755,8 +763,8 @@
       ]
     },
     {
-      "source": "S-651",
-      "target": "S-100",
+      "source": "Q-651",
+      "target": "Q-100",
       "misconfigurationIds": [
         "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91",
         "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91"
@@ -773,8 +781,8 @@
       ]
     },
     {
-      "source": "S-651",
-      "target": "S-200",
+      "source": "Q-651",
+      "target": "Q-200",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -783,8 +791,8 @@
       ]
     },
     {
-      "source": "S-651",
-      "target": "S-650",
+      "source": "Q-651",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -793,8 +801,8 @@
       ]
     },
     {
-      "source": "S-652",
-      "target": "S-650",
+      "source": "Q-652",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -803,8 +811,8 @@
       ]
     },
     {
-      "source": "S-653",
-      "target": "S-650",
+      "source": "Q-653",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -813,8 +821,8 @@
       ]
     },
     {
-      "source": "S-654",
-      "target": "S-100",
+      "source": "Q-654",
+      "target": "Q-100",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -823,8 +831,8 @@
       ]
     },
     {
-      "source": "S-654",
-      "target": "S-200",
+      "source": "Q-654",
+      "target": "Q-200",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -833,8 +841,8 @@
       ]
     },
     {
-      "source": "S-654",
-      "target": "S-300",
+      "source": "Q-654",
+      "target": "Q-300",
       "misconfigurationIds": [],
       "attackIds": [
         "3f8a6c1e-9d4b-4c7a-b2c1-8e9f6d4a1b72"
@@ -845,8 +853,8 @@
       ]
     },
     {
-      "source": "S-654",
-      "target": "S-350",
+      "source": "Q-654",
+      "target": "Q-350",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
@@ -855,8 +863,8 @@
       ]
     },
     {
-      "source": "S-654",
-      "target": "S-650",
+      "source": "Q-654",
+      "target": "Q-650",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -865,7 +873,7 @@
       ]
     },
     {
-      "source": "S-654",
+      "source": "Q-654",
       "target": "STATE-CRED",
       "bidirectional": true,
       "misconfigurationIds": [],
@@ -876,8 +884,8 @@
       ]
     },
     {
-      "source": "S-700",
-      "target": "S-600",
+      "source": "Q-700",
+      "target": "Q-600",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -886,8 +894,8 @@
       ]
     },
     {
-      "source": "S-700",
-      "target": "S-701",
+      "source": "Q-700",
+      "target": "Q-701",
       "misconfigurationIds": [],
       "attackIds": [
         "6e2c9b8a-4f1d-4c3a-9e7b-1a5f8d0c2b74",
@@ -902,8 +910,8 @@
       ]
     },
     {
-      "source": "S-700",
-      "target": "S-702",
+      "source": "Q-700",
+      "target": "Q-702",
       "misconfigurationIds": [],
       "attackIds": [
         "9c1d7f4e-2c6a-4a7e-8b21-3e5c7a0f4d92",
@@ -916,8 +924,8 @@
       ]
     },
     {
-      "source": "S-700",
-      "target": "S-703",
+      "source": "Q-700",
+      "target": "Q-703",
       "misconfigurationIds": [],
       "attackIds": [
         "b7a4c2e1-3d6f-4c9a-9f2e-1a8d5c0e6b93",
@@ -930,8 +938,8 @@
       ]
     },
     {
-      "source": "S-701",
-      "target": "S-700",
+      "source": "Q-701",
+      "target": "Q-700",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -940,8 +948,8 @@
       ]
     },
     {
-      "source": "S-702",
-      "target": "S-700",
+      "source": "Q-702",
+      "target": "Q-700",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -950,8 +958,8 @@
       ]
     },
     {
-      "source": "S-703",
-      "target": "S-700",
+      "source": "Q-703",
+      "target": "Q-700",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -960,8 +968,8 @@
       ]
     },
     {
-      "source": "S-800",
-      "target": "S-600",
+      "source": "Q-800",
+      "target": "Q-600",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -970,8 +978,8 @@
       ]
     },
     {
-      "source": "S-800",
-      "target": "S-804",
+      "source": "Q-800",
+      "target": "Q-804",
       "misconfigurationIds": [
         "e2f7c9b4-6d1a-4b5e-9a3c-0f8e2d7b6a41",
         "f3a9c7b2-1d84-4e6f-9a0b-6c2e8d5a4f91"
@@ -996,8 +1004,8 @@
       ]
     },
     {
-      "source": "S-800",
-      "target": "S-801",
+      "source": "Q-800",
+      "target": "Q-801",
       "misconfigurationIds": [],
       "attackIds": [
         "8f2c6a3e-1b74-4e9a-9c5d-0a7e3b2f6d91"
@@ -1008,8 +1016,8 @@
       ]
     },
     {
-      "source": "S-800",
-      "target": "S-802",
+      "source": "Q-800",
+      "target": "Q-802",
       "misconfigurationIds": [],
       "attackIds": [
         "e3b7a6f2-9c4d-4b8e-8a1f-2d6c5e9b7a04",
@@ -1022,8 +1030,8 @@
       ]
     },
     {
-      "source": "S-800",
-      "target": "S-803",
+      "source": "Q-800",
+      "target": "Q-803",
       "misconfigurationIds": [],
       "attackIds": [
         "5d8a9c3e-1f24-4b6d-9a72-0e6c1b8f4a93",
@@ -1036,18 +1044,18 @@
       ]
     },
     {
-      "source": "S-950",
-      "target": "S-999",
+      "source": "T-950",
+      "target": "T-990",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
       "edgeLabels": [
-        "Privilege escalation in the Containers Realm is exhausted"
+        "Privilege escalation in the Workload Realm is exhausted"
       ]
     },
     {
-      "source": "S-900",
-      "target": "S-950",
+      "source": "T-900",
+      "target": "T-950",
       "misconfigurationIds": [
         "Lax Pod Security Admission Settings"
       ],
@@ -1064,8 +1072,8 @@
       ]
     },
     {
-      "source": "S-801",
-      "target": "S-800",
+      "source": "Q-801",
+      "target": "Q-800",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -1074,8 +1082,8 @@
       ]
     },
     {
-      "source": "S-802",
-      "target": "S-800",
+      "source": "Q-802",
+      "target": "Q-800",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -1084,8 +1092,8 @@
       ]
     },
     {
-      "source": "S-803",
-      "target": "S-800",
+      "source": "Q-803",
+      "target": "Q-800",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -1094,8 +1102,8 @@
       ]
     },
     {
-      "source": "S-804",
-      "target": "S-800",
+      "source": "Q-804",
+      "target": "Q-800",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "backtrack",
@@ -1104,8 +1112,8 @@
       ]
     },
     {
-      "source": "S-999",
-      "target": "S-000",
+      "source": "T-990",
+      "target": "Q-000",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
@@ -1114,8 +1122,8 @@
       ]
     },
     {
-      "source": "S-999",
-      "target": "S-OP-000",
+      "source": "T-990",
+      "target": "Q-inf-000",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "realm_transition",
@@ -1124,8 +1132,8 @@
       ]
     },
     {
-      "source": "S-999",
-      "target": "S-AWS-000",
+      "source": "T-990",
+      "target": "Q-aws-000",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "realm_transition",
@@ -1134,16 +1142,16 @@
       ]
     },
     {
-      "source": "S-OP-000",
-      "target": "S-OP-100",
+      "source": "Q-inf-000",
+      "target": "Q-inf-100",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "black_box_attack",
       "edgeLabels": []
     },
     {
-      "source": "S-OP-100",
-      "target": "S-OP-999",
+      "source": "Q-inf-100",
+      "target": "T-inf-999",
       "misconfigurationIds": [
         "c4a8b7d2-5f3e-4a9c-9e61-2d8b0f7a6c35"
       ],
@@ -1158,46 +1166,46 @@
       ]
     },
     {
-      "source": "S-OP-999",
-      "target": "T-900",
+      "source": "T-inf-999",
+      "target": "T-999",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
       "edgeLabels": [
-        "Privilege escalation in the On-Prem Realm is Exhausted"
+        "Privilege escalation in the Infrastructure Realm is Exhausted"
       ]
     },
     {
-      "source": "S-OP-999",
-      "target": "T-999",
+      "source": "T-inf-999",
+      "target": "T-inf-900",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "black_box_attack",
       "edgeLabels": [
-        "The On-Prem Realm was Exploited"
+        "The Infrastructure Realm was Exploited"
       ]
     },
     {
-      "source": "S-OP-999",
-      "target": "S-AWS-000",
+      "source": "T-inf-999",
+      "target": "Q-aws-000",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "realm_transition",
       "edgeLabels": [
-        "Exploiting the On-Prem Realm Allowed for Additional AWS Access"
+        "Exploiting the Infrastructure Realm Allowed for Additional AWS Access"
       ]
     },
     {
-      "source": "S-AWS-000",
-      "target": "S-AWS-100",
+      "source": "Q-aws-000",
+      "target": "Q-aws-100",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "black_box_attack",
       "edgeLabels": []
     },
     {
-      "source": "S-AWS-100",
-      "target": "S-AWS-999",
+      "source": "Q-aws-100",
+      "target": "T-aws-999",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "black_box_attack",
@@ -1210,33 +1218,33 @@
       ]
     },
     {
-      "source": "S-AWS-999",
-      "target": "T-900",
+      "source": "T-aws-999",
+      "target": "T-999",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",
       "edgeLabels": [
-        "Privilege escalation in the AWS Realm is Exhausted"
+        "Privilege escalation in the AWS-Management Realm is Exhausted"
       ]
     },
     {
-      "source": "S-AWS-999",
-      "target": "T-999",
+      "source": "T-aws-999",
+      "target": "T-aws-900",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "black_box_attack",
       "edgeLabels": [
-        "The AWS Realm was Exploited"
+        "The AWS-Management Realm was Exploited"
       ]
     },
     {
-      "source": "S-AWS-999",
-      "target": "S-OP-000",
+      "source": "T-aws-999",
+      "target": "Q-inf-000",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "realm_transition",
       "edgeLabels": [
-        "Exploiting the AWS Realm Allowed for Additional On-Prem-like Access"
+        "Exploiting the AWS-Management Realm Allowed for Additional Infrastructure-like Access"
       ]
     },
     {
@@ -1275,7 +1283,95 @@
     },
     {
       "source": "T-999",
-      "target": "S-000",
+      "target": "Q-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Start Attack with Knowledge From Memory"
+      ]
+    },
+    {
+      "source": "T-aws-900",
+      "target": "STATE-CRED",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Credentials"
+      ]
+    },
+    {
+      "source": "T-inf-900",
+      "target": "STATE-CRED",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Credentials"
+      ]
+    },
+    {
+      "source": "T-aws-900",
+      "target": "STATE-ENV",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Cluster and Cloud Resources",
+        "Memorize Principals and Permissions"
+      ]
+    },
+    {
+      "source": "T-inf-900",
+      "target": "STATE-ENV",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Cluster and Cloud Resources",
+        "Memorize Principals and Permissions"
+      ]
+    },
+    {
+      "source": "T-aws-900",
+      "target": "STATE-CTRL",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Controlled Workloads"
+      ]
+    },
+    {
+      "source": "T-inf-900",
+      "target": "STATE-CTRL",
+      "bidirectional": true,
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "memory_update",
+      "edgeLabels": [
+        "Memorize Controlled Workloads"
+      ]
+    },
+    {
+      "source": "T-aws-900",
+      "target": "Q-000",
+      "misconfigurationIds": [],
+      "attackIds": [],
+      "type": "logical_transition",
+      "edgeLabels": [
+        "Start Attack with Knowledge From Memory"
+      ]
+    },
+    {
+      "source": "T-inf-900",
+      "target": "Q-000",
       "misconfigurationIds": [],
       "attackIds": [],
       "type": "logical_transition",

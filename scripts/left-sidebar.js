@@ -41,18 +41,41 @@ const toggleHideGoBackEdges = ({ appState }) => (hide) => {
 };
 
 
+const REALM_ORDER = [
+    { id: "REALM_WORKLOAD", label: "Workload Realm" },
+    { id: "REALM_AWS_MANAGEMENT",       label: "AWS Management Realm" },
+    { id: "REALM_INFRASTRUCTURE",   label: "Infrastructure Realm" },
+    { id: "REALM_MEMORY",    label: "Memory" },
+];
+
+const groupedNonRealmNodes = (cy) => {
+    return REALM_ORDER.map(({ id: realmId, label: realmLabel }) => {
+        const nodes = cy.getElementById(realmId)
+            .children()
+            .map(n => ({ id: n.id(), label: n.data("label") || n.id() }))
+            .sort((a, b) => a.label.localeCompare(b.label));
+        return { realmLabel, nodes };
+    }).filter(g => g.nodes.length > 0);
+};
+
+const appendGroupedOptions = (selectEl, groups) => {
+    groups.forEach(({ realmLabel, nodes }) => {
+        const group = document.createElement("optgroup");
+        group.label = realmLabel;
+        nodes.forEach(node => {
+            const opt = document.createElement("option");
+            opt.value = node.id;
+            opt.textContent = node.label;
+            group.appendChild(opt);
+        });
+        selectEl.appendChild(group);
+    });
+};
+
 const populateNodeSelect = ({ cy }) => (selectEl, placeholderText) => {
     if (!selectEl || !cy) {
         return;
     }
-
-    const nodes = cy
-        .nodes()
-        .map(n => ({
-            id: n.id(),
-            label: n.data("label") || n.id(),
-        }))
-        .sort((a, b) => a.label.localeCompare(b.label));
 
     const current = selectEl.value;
     selectEl.innerHTML = "";
@@ -62,14 +85,11 @@ const populateNodeSelect = ({ cy }) => (selectEl, placeholderText) => {
     ph.textContent = placeholderText;
     selectEl.appendChild(ph);
 
-    nodes.forEach(node => {
-        const opt = document.createElement("option");
-        opt.value = node.id;
-        opt.textContent = node.label || node.id;
-        selectEl.appendChild(opt);
-    });
+    const groups = groupedNonRealmNodes(cy);
+    appendGroupedOptions(selectEl, groups);
 
-    if (current && nodes.some(n => n.id === current)) {
+    const allNodes = groups.flatMap(g => g.nodes);
+    if (current && allNodes.some(n => n.id === current)) {
         selectEl.value = current;
     }
 }
@@ -81,13 +101,7 @@ const populateNodeSearchSelect = ({ cy }) => {
     }
 
     select.innerHTML = '<option value="">Select a node…</option>';
-
-    cy.nodes().forEach(n => {
-        const opt = document.createElement("option");
-        opt.value = n.id();                 // authoritative
-        opt.textContent = n.data("label");  // human-readable
-        select.appendChild(opt);
-    });
+    appendGroupedOptions(select, groupedNonRealmNodes(cy));
 }
 
 const populateEnvSelect = ({ envConfig, currentEnvKey }) => {

@@ -210,15 +210,15 @@ const initCytoscape = ({
                 }
             },
             {
-                selector: '#REALM_CONTAINER',
+                selector: '#REALM_WOORKLOAD',
                 style: {'background-color': '#38bdf8'}
             },
             {
-                selector: '#REALM_AWS',
+                selector: '#REALM_AWS_MANAGEMENT',
                 style: {'background-color': '#fca503'}
             },
             {
-                selector: '#REALM_ON_PREM',
+                selector: '#REALM_INFRASTRUCTURE',
                 style: {'background-color': '#a855f7'}
             },
             {
