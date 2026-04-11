@@ -138,7 +138,7 @@ const clearAllClasses = ({ cy }) => {
         return;
     }
     cy.elements().removeClass(
-        "fully-transparent highlight-node highlight-edg"
+        "fully-transparent highlight-node highlight-edge dimmed"
     );
 }
 
