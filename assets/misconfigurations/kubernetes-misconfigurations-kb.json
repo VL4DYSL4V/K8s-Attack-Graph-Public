@@ -481,6 +481,172 @@
         }
       ],
       "exploit_ids": []
+    },
+    {
+      "id": "f055eb28-2b62-424e-8cf6-88adf7c5f644",
+      "name": "Outdated Container Images",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Container images that ship obsolete operating system packages, runtimes, libraries, or application dependencies\ncarry the known vulnerabilities (CVEs) of every outdated component they bundle. Because the vulnerable versions are\npinned into the image layers, every pod started from such an image reintroduces the same flaws across the cluster, and\nthey persist until the image is rebuilt and redeployed. Known vulnerabilities are especially dangerous because they are\npublicly documented and frequently accompanied by ready-made proof-of-concept or weaponized exploits (e.g., on Exploit-DB,\nGitHub, or Metasploit), which removes the need for the attacker to perform any original research and dramatically lowers\nthe skill and time required to compromise the workload. Attackers routinely fingerprint software versions exposed by a\nservice and match them against public vulnerability databases to select a working exploit. Depending on the vulnerable\ncomponent, the same misconfiguration can enable initial access through a vulnerable public-facing service, local\nprivilege escalation inside the container, or denial-of-service against the workload.",
+      "attacker_gains": [],
+      "impact": "Exploiting a known vulnerability in an outdated image can grant an attacker initial code execution inside the container,\nescalate privileges from an unprivileged application user toward root within the container, or crash the workload to cause\ndenial-of-service. Code execution obtained this way becomes a foothold for all `workload_code_execution` follow-on\ntechniques: stealing ServiceAccount tokens, reading mounted secrets and volumes, pivoting across the network, or escaping\nto the host when combined with other misconfigurations such as containers running as root or lax Pod Security Admission.\nBecause public exploits are often reliable and automated, mass-scanning attackers can weaponize the flaw at scale with\nminimal effort, and a single widely reused base image can propagate the same vulnerability across many workloads.",
+      "prerequisites": {
+        "_and": [
+          "A deployed image containing a component affected by a known vulnerability",
+          {
+            "_or": [
+              "Network access to the vulnerable service (for remotely exploitable vulnerabilities granting initial access)",
+              "Code execution in the container via any of the `workload_code_execution` techniques (for locally exploitable vulnerabilities)"
+            ]
+          }
+        ]
+      },
+      "recommendations": "Continuously scan images for known vulnerabilities in CI/CD and at admission time using scanners such as Trivy,\nGrype, or cloud-native registry scanning, and fail builds or block deployments that contain high-severity, fixable CVEs.\nRebuild images regularly to pull current base images and patched dependencies rather than relying on long-lived, pinned\nlayers, and prefer minimal or distroless base images to shrink the vulnerable surface. Track a software bill of materials\n(SBOM) for each image so that newly disclosed CVEs can be mapped to affected workloads and remediated quickly. Enforce\nimage provenance and freshness through admission policies, avoid mutable tags such as `latest` in favor of digests, and\nmonitor running workloads against vulnerability feeds so that images with newly published exploits are prioritized for\nrotation.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1190",
+          "name": "Exploit Public-Facing Application",
+          "tactics": [
+            "Initial Access"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "f9d60723-5c9a-47ac-9d62-e44833c19d90",
+      "name": "Read-Only Filesystem is not in use",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "By default a container's root filesystem is writable, and unless `readOnlyRootFilesystem: true` is set in the\ncontainer's `securityContext`, an attacker who gains code execution inside the workload can modify any file the process\nuser can reach. This allows them to overwrite application binaries and configuration, drop additional tooling, scripts,\nor reverse-shell payloads, and plant webshells or backdoors that persist for the lifetime of the pod. A writable\nfilesystem also undermines image immutability: the running container is allowed to diverge from the audited image,\nwhich makes tampering harder to detect and incident response harder to reason about. An immutable root filesystem,\ncombined with narrowly scoped writable `emptyDir` or ephemeral volumes for the few paths that genuinely require writes,\nremoves this capability and forces attackers to operate entirely in memory, which is noisier and far less reliable.",
+      "attacker_gains": [],
+      "impact": "With a writable filesystem, attackers can stage and execute downloaded tooling, modify the application's own code or\nbinaries to inject malicious logic, and plant backdoors that survive for as long as the pod runs. Tampering with\nconfiguration files can redirect the workload to attacker-controlled endpoints or disable in-application security\ncontrols. The ability to write to disk also makes many follow-on techniques more reliable, because compilers,\ninterpreters, and payloads can be written out and invoked instead of being constrained to in-memory execution. Because\nthe container no longer matches its source image, drift-based detection and forensic analysis become significantly\nharder. While filesystem writes are lost when the pod is recreated, attackers frequently combine them with\nworkload-controller or image-level footholds to achieve durable persistence across restarts.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Set `readOnlyRootFilesystem: true` in every container's `securityContext` and enforce it cluster-wide through\nPod Security Admission or an admission controller such as Kyverno or OPA/Gatekeeper. For the small number of paths that\nlegitimately require writes (caches, temporary directories, PID files), mount dedicated writable `emptyDir` or ephemeral\nvolumes scoped to those exact locations instead of leaving the entire root filesystem writable. Combine the read-only\nroot filesystem with a non-root user, dropped Linux capabilities, and seccomp or AppArmor profiles so that even after\ncode execution the attacker cannot modify the workload. Audit workloads for drift, alert on unexpected writes to\ncontainer filesystems, and ensure build pipelines cannot silently remove the `readOnlyRootFilesystem` setting from\nproduction manifests.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1554",
+          "name": "Compromise Host Software Binary",
+          "tactics": [
+            "Persistence"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "8b59e08e-1578-4263-afb7-527cd10f0137",
+      "name": "Containers Allowing Privilege Escalation",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "The `allowPrivilegeEscalation` field in a container's `securityContext` controls the kernel's `no_new_privs` flag, and\nit defaults to `true`. When it is left enabled, a process is permitted to gain more privileges than its parent, which means\nsetuid and setgid binaries and file capabilities present in the image can be used to elevate privileges at runtime. An\nattacker who gains code execution as an unprivileged user inside such a container can invoke a setuid-root binary (or one\ncarrying file capabilities) to become root within the container, undermining the protection that running as a non-root\nuser is supposed to provide. Setting `allowPrivilegeEscalation: false` sets `no_new_privs`, which neutralizes setuid,\nsetgid, and file-capability based elevation and prevents a low-privileged foothold from being upgraded to in-container\nroot. Because this field defaults to insecure, workloads silently allow escalation unless it is explicitly disabled.",
+      "attacker_gains": [],
+      "impact": "Attackers can escalate from a low-privileged application user to root inside the container, re-enabling the full range\nof root-dependent post-exploitation actions even on workloads that were deliberately configured to run as non-root.\nRoot in the container makes capability-based and setuid-based exploitation reliable, allows reading or modifying any\nin-container file, and significantly increases the success rate of container-escape techniques that depend on UID 0 when\ncombined with other misconfigurations such as powerful Linux capabilities, `privileged` mode, or sensitive hostPath\nmounts. Allowing privilege escalation therefore collapses the non-root hardening boundary and turns a minor foothold into\nfull control of the workload, and potentially of the node.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Set `allowPrivilegeEscalation: false` in every container's `securityContext` and enforce it cluster-wide through Pod\nSecurity Admission restricted mode (which requires this field to be disabled) or an admission controller such as Kyverno\nor OPA/Gatekeeper. Combine it with `runAsNonRoot: true`, dropping all Linux capabilities (`drop: [\"ALL\"]`), a read-only\nroot filesystem, and seccomp or AppArmor profiles so that a compromised process cannot regain privileges. Strip setuid\nand setgid bits from binaries during image builds and prefer minimal or distroless base images that do not ship\nprivileged helper binaries. Continuously audit workloads for this setting and ensure operational pipelines cannot\nreintroduce the insecure default into production manifests.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1548",
+          "name": "Abuse Elevation Control Mechanism",
+          "tactics": [
+            "Privilege Escalation",
+            "Defense Evasion"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "96bf55ec-28b9-422f-ac06-5ae03d688707",
+      "name": "Weak Secrets in Use",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Secrets, passwords, API keys, and tokens that are default, predictable, low-entropy, or reused provide little real\nprotection because an attacker does not need to steal them - the values can be looked up or guessed. A very common source\nis Helm charts and off-the-shelf software that ship with predefined credentials which operators forget to override. For\nexample, the widely deployed `kube-prometheus-stack` chart provisions Grafana with the well-known default credentials\n`admin:prom-operator`; unless this is explicitly changed, anyone who can reach the Grafana service can log in as an\nadministrator. Similar baked-in defaults ship with databases, message brokers, dashboards, and operators. Predictable\nsecrets are equally dangerous - short passwords, sequential or templated tokens, or values derived from the release or\nnamespace name can be brute-forced or inferred without any prior access. Because these values are public knowledge or\ntrivially guessable, they turn any network-reachable service into an open door.",
+      "attacker_gains": [],
+      "impact": "Attackers can authenticate directly to the affected service using known or guessed credentials, gaining whatever\nprivileges that account holds. For admin-level defaults such as Grafana's `admin`, this can mean full control of the\napplication, access to all the data it exposes, and a foothold for further pivoting. Observability and dashboard tools\nfrequently expose data sources, internal endpoints, and stored credentials that enable lateral movement; databases and\nbrokers expose or allow tampering with application data; operators and controllers may grant cluster-level capabilities.\nReused weak secrets compound the damage, because recovering one credential can unlock many services at once. Since\nauthentication succeeds with legitimate credentials, the activity blends in with normal usage and is difficult to\ndistinguish from authorized access.",
+      "prerequisites": {
+        "_and": [
+          "Network access to the service or interface that authenticates with the secret",
+          {
+            "_or": [
+              "The secret is a well-known default shipped by the software or Helm chart (e.g., Grafana `admin:prom-operator`) and was not changed",
+              "The secret is weak or predictable enough to be guessed or brute-forced"
+            ]
+          }
+        ]
+      },
+      "recommendations": "Change every default credential before or immediately after deploying third-party software and Helm charts, and\ntreat chart defaults as placeholders rather than usable values. Generate secrets with high entropy and manage them through\na secrets manager such as HashiCorp Vault, AWS Secrets Manager, or the External Secrets Operator, injecting them at deploy\ntime instead of relying on chart defaults or hardcoded values. For `kube-prometheus-stack` specifically, override\n`grafana.adminPassword` or point it at an existing secret rather than shipping `prom-operator`. Enforce minimum length and\nentropy requirements, forbid credential reuse across environments, and rotate secrets regularly. Scan running workloads\nand manifests for known default credentials, and use admission policies to block deployments that reference well-known\ndefaults. Where possible, disable static password authentication in favor of SSO/OIDC or mutual TLS so that a single\nstatic secret is not the only barrier to access.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1078",
+          "name": "Valid Accounts",
+          "tactics": [
+            "Initial Access",
+            "Privilege Escalation"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "b33f5e91-6943-40d3-9e4c-7a33e2e8111f",
+      "name": "Application Files Writable by the Runtime User",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Even when a container runs as a non-root user, much of that benefit is lost if the application's own binaries, code,\nscripts, and configuration files are owned by - and writable by - the same user that runs the application. In that layout\nthe running process can modify itself: an attacker who achieves code execution inside the workload (with the privileges of\nthe application) can overwrite executables or interpreted source files with malware, weaken configuration (for example\ndisabling TLS verification, relaxing authentication, enabling debug endpoints, or pointing the app at attacker-controlled\nhosts), or plant persistent backdoors - all without any privilege escalation, because the process already owns the files.\nThe hardening goal is to separate the identity that owns the files from the identity that runs the code: application files\nshould be owned by a different user (e.g., root or a dedicated build-time user) and granted only read and execute\npermission to the runtime user, which makes the code and configuration immutable to the running process. This control is\nespecially important when a read-only root filesystem (`readOnlyRootFilesystem: true`) cannot be used - for instance when\nthe application legitimately needs to write to some paths - because strict ownership and permissions still prevent the\nruntime user from tampering with its own code and configuration.",
+      "attacker_gains": [],
+      "impact": "Because the running process can write to its own files, an attacker who compromises the application gains tampering and\ncode-execution persistence with no further privileges required. They can overwrite the running code with malware or a\nwebshell that executes on the next request or restart, silently weaken security-relevant configuration, or modify data\nfiles the application trusts. Unlike writes to unrelated temporary paths, modifying the application's own code and\nconfiguration directly subverts the workload's behavior and can survive restarts when the write targets a persistent\nvolume or is re-applied through a compromised pipeline. It also defeats integrity monitoring, because the on-disk\nartifacts no longer match the audited image.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Ensure application binaries, scripts, and configuration are owned by a user or group other than the one the container\nruns as (commonly root or a dedicated build-time user), and grant the runtime user only read and execute permissions\n(e.g., `0555` for binaries and directories, `0444` for configuration) rather than write. Establish this at image build\ntime with `COPY --chown` and explicit `chmod` so the runtime user cannot alter the application directory or its config.\nPrefer `readOnlyRootFilesystem: true` as the primary control; where it is not feasible, rely on strict ownership and\npermissions combined with narrowly scoped writable volumes for the few paths that genuinely require writes. Run the\ncontainer as a non-root user and drop capabilities such as `CAP_CHOWN`, `CAP_FOWNER`, and `CAP_DAC_OVERRIDE` so the\nprocess cannot simply change ownership or bypass the file permissions. Monitor for unexpected modifications to application\nfiles and verify on-disk artifacts against the image.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1554",
+          "name": "Compromise Host Software Binary",
+          "tactics": [
+            "Persistence"
+          ]
+        }
+      ],
+      "exploit_ids": []
+    },
+    {
+      "id": "3a278a3d-60b4-42b4-8701-701954889cdf",
+      "name": "Missing EDR and Antivirus Solutions",
+      "environment": [
+        "ON-PREM",
+        "AWS"
+      ],
+      "description": "Clusters without runtime threat detection - endpoint detection and response (EDR), antivirus/anti-malware, and\nKubernetes-aware runtime security such as Falco, Tetragon, or a commercial CNAPP agent - have no mechanism to observe,\nalert on, or block malicious behavior inside running workloads and on nodes. Preventive controls like RBAC, Pod Security\nAdmission, NetworkPolicies, and image scanning reduce the attack surface but do nothing once an attacker already has a\nfoothold; without runtime detection, post-exploitation activity proceeds entirely in the dark. Attackers increasingly\nrely on automated exploitation and self-propagating tooling - worms, crypto-miners, and botnet agents - that drop\npayloads, spawn reverse shells, scan the internal network, enumerate the Kubernetes API, and attempt lateral movement\nwithin seconds of landing. Runtime detection is specifically designed to catch these behavioral signatures: unexpected\nprocess execution, known malware signatures, suspicious outbound connections, container drift, and anomalous API calls,\nand to alert on or kill the offending process or pod. Its absence means none of this is seen, giving attackers unlimited\ndwell time and the freedom to operate noisily without consequence.",
+      "attacker_gains": [],
+      "impact": "An attacker who gains any foothold can operate without resistance: deploy malware and crypto-miners, run reconnaissance\nand credential theft, pivot across namespaces and nodes, and exfiltrate data, all without generating a single alert or\ntriggering any automated containment. Automated exploit kits and worms that mature detection would flag and stop - by\nknown signatures or anomalous behavior - instead succeed and spread unchecked. Attacker dwell time increases\ndramatically, incident response begins late (often only after visible business impact), and forensic reconstruction is\ncrippled because the process, file, and network telemetry that EDR and runtime tools provide was never collected. In\neffect, the cluster is missing the detection-and-response layer that keeps a single compromised workload from escalating\ninto a cluster-wide breach.",
+      "prerequisites": "Code execution in a pod via any of the `workload_code_execution` techniques",
+      "recommendations": "Deploy runtime threat detection across the cluster: run a Kubernetes-aware runtime security engine (e.g., Falco,\nTetragon/Cilium, or a commercial CNAPP/EDR agent) as a DaemonSet to monitor syscalls, process execution, file integrity,\nand network activity on every node, and add anti-malware scanning for both images and running workloads. Configure\nbehavioral rules to detect reverse shells, runtime use of package managers or compilers, container drift, access to\nservice account tokens and cloud metadata endpoints, and anomalous API server calls, and forward alerts to a SIEM/SOAR\nfor triage. Enable automated response where feasible, such as killing or isolating offending pods and applying quarantine\nNetworkPolicies. Ship Kubernetes audit logs along with node and container logs to a central, tamper-resistant store so\ndetections have context and investigations are possible. Regularly test detections with adversary-emulation tooling to\nconfirm that automated exploitation and lateral movement are actually caught, and treat runtime detection as\ncomplementary to - not a replacement for - preventive hardening.",
+      "cwe": [],
+      "mitre": [
+        {
+          "id": "T1562",
+          "name": "Impair Defenses",
+          "tactics": [
+            "Defense Evasion"
+          ]
+        }
+      ],
+      "exploit_ids": []
     }
   ]
 }
